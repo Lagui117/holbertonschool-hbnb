@@ -31,8 +31,8 @@ sequenceDiagram
     
     UserService->>+UserRepo: findByEmail(email)
     UserRepo->>+DB: SELECT * FROM users WHERE email = ?
-    DB-->>-UserRepo: null
-    UserRepo-->>-UserService: null
+    DB-->>-UserRepo: 
+    UserRepo-->>-UserService: 
     
     UserService->>UserService: createUser(userData)
     UserService->>+UserRepo: save(user)

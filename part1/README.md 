@@ -1,0 +1,302 @@
+# HBnB Evolution - Part 1: UML Design
+
+[English](#english) | [Français](#français)
+
+---
+
+## English
+
+### 📋 Project Overview
+
+HBnB Evolution is a simplified AirBnB-like application. This repository contains **Part 1: UML Design Documentation** - the complete technical design and architecture documentation before implementation.
+
+### 🎯 Objectives
+
+- Design a robust layered architecture
+- Document all entities and their relationships
+- Define API interaction flows
+- Establish business rules and validation constraints
+- Prepare a solid foundation for development phases
+
+### 👥 Team
+
+- **Yassin Jaghmim**
+- **Guillaume Watelet**
+
+### 📦 Repository Structure
+
+```
+holbertonschool-hbnb/
+├── part1/
+│   ├── 0-packages.md              # High-level package diagram
+│   ├── 1-classes.md               # Detailed class diagram
+│   ├── 2-sequences.md             # API sequence diagrams
+│   └── 3-documentation.md         # Complete documentation
+└── README.md                      # This file
+```
+
+### 📚 Documentation Files
+
+| File | Description |
+|------|-------------|
+| **0-packages.md** | High-level package diagram showing the 3-layer architecture (Presentation, Business Logic, Persistence) |
+| **1-classes.md** | Detailed class diagram with all entities (User, Place, Review, Amenity) and their relationships |
+| **2-sequences.md** | 4 sequence diagrams showing API flows (User Registration, Place Creation, Review Submission, Fetch Places) |
+| **3-documentation.md** | Complete technical documentation compiling all diagrams with explanations |
+
+### 🏗️ Architecture
+
+**Pattern:** Layered Architecture (3 layers)
+
+```
+┌─────────────────────┐
+│ Presentation Layer  │  ← API Controllers, REST Endpoints
+├─────────────────────┤
+│ Business Logic      │  ← Facade, Services, Models
+├─────────────────────┤
+│ Persistence Layer   │  ← Repositories, Database
+└─────────────────────┘
+```
+
+**Key Features:**
+- ✅ Facade pattern for simplified inter-layer communication
+- ✅ Clear separation of concerns
+- ✅ SOLID principles applied
+- ✅ Comprehensive validation rules
+
+### 🔑 Core Entities
+
+1. **User** - Registered users with authentication
+2. **Place** - Properties listed by users
+3. **Review** - User reviews on places
+4. **Amenity** - Services/facilities (WiFi, pool, etc.)
+
+### 📊 Key Business Rules
+
+| Rule | Description |
+|------|-------------|
+| ✅ **Unique Email** | Each user must have a unique email address |
+| ✅ **Password Security** | Passwords hashed with bcrypt/argon2 (never plain text) |
+| ❌ **No Self-Review** | Users cannot review their own places |
+| ✅ **One Review Per Place** | Each user can only leave one review per place |
+| ✅ **Valid Coordinates** | Latitude ∈ [-90, 90], Longitude ∈ [-180, 180] |
+| ✅ **Positive Price** | Place prices must be ≥ 0 |
+| ✅ **Rating Range** | Review ratings must be between 1 and 5 |
+
+### 🚀 Getting Started
+
+#### Viewing the Documentation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/holbertonschool-hbnb.git
+cd holbertonschool-hbnb/part1
+```
+
+2. Open the documentation files in order:
+   - Start with `0-packages.md` for architecture overview
+   - Then `1-classes.md` for entity details
+   - Review `2-sequences.md` for API flows
+   - Read `3-documentation.md` for complete documentation
+
+3. All diagrams use **Mermaid** syntax and render automatically on GitHub
+
+#### Mermaid Diagrams
+
+All UML diagrams are created using Mermaid.js and will render automatically when viewed on GitHub. If you want to view them locally, you can use:
+
+- [Mermaid Live Editor](https://mermaid.live/)
+- VS Code with [Mermaid Preview Extension](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+
+### 🛠️ Technologies & Tools
+
+- **UML Notation:** Standard UML 2.x
+- **Diagram Tool:** Mermaid.js
+- **Documentation:** Markdown
+- **Version Control:** Git/GitHub
+
+### 📖 API Endpoints Designed
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/users` | POST | Register new user |
+| `/places` | POST | Create new place (authenticated) |
+| `/places` | GET | Fetch list of places (with filters) |
+| `/places/{id}/reviews` | POST | Submit review (authenticated) |
+
+### ✅ Validation & Error Handling
+
+**HTTP Status Codes:**
+- `200` - Successful GET request
+- `201` - Resource created successfully
+- `400` - Invalid data provided
+- `401` - Authentication required/invalid
+- `403` - Action forbidden (e.g., self-review)
+- `404` - Resource not found
+- `409` - Conflict (duplicate email/review)
+- `503` - Service unavailable
+
+### 🔄 Next Steps
+
+This is Part 1 (Design Phase). Next phases include:
+
+- **Part 2:** REST API Implementation
+- **Part 3:** Database Integration
+- **Part 4:** Frontend Interface
+
+### 📝 License
+
+This project is part of the Holberton School curriculum.
+
+### 🤝 Contributing
+
+This is an educational project. For questions or suggestions, please contact the team members.
+
+---
+
+## Français
+
+### 📋 Aperçu du Projet
+
+HBnB Evolution est une application simplifiée de type AirBnB. Ce dépôt contient **Part 1 : Documentation de Conception UML** - la documentation technique complète de conception et d'architecture avant l'implémentation.
+
+### 🎯 Objectifs
+
+- Concevoir une architecture en couches robuste
+- Documenter toutes les entités et leurs relations
+- Définir les flux d'interaction des API
+- Établir les règles métier et contraintes de validation
+- Préparer une base solide pour les phases de développement
+
+### 👥 Équipe
+
+- **Yassin Jaghmim**
+- **Guillaume Watelet**
+
+### 📦 Structure du Dépôt
+
+```
+holbertonschool-hbnb/
+├── part1/
+│   ├── 0-packages.md              # Diagramme de packages de haut niveau
+│   ├── 1-classes.md               # Diagramme de classes détaillé
+│   ├── 2-sequences.md             # Diagrammes de séquence API
+│   └── 3-documentation.md         # Documentation complète
+└── README.md                      # Ce fichier
+```
+
+### 📚 Fichiers de Documentation
+
+| Fichier | Description |
+|---------|-------------|
+| **0-packages.md** | Diagramme de packages montrant l'architecture 3 couches (Présentation, Logique Métier, Persistance) |
+| **1-classes.md** | Diagramme de classes détaillé avec toutes les entités (User, Place, Review, Amenity) et leurs relations |
+| **2-sequences.md** | 4 diagrammes de séquence montrant les flux API (Inscription, Création lieu, Soumission avis, Liste lieux) |
+| **3-documentation.md** | Documentation technique complète compilant tous les diagrammes avec explications |
+
+### 🏗️ Architecture
+
+**Pattern :** Architecture en Couches (3 couches)
+
+```
+┌─────────────────────┐
+│ Couche Présentation │  ← Contrôleurs API, Endpoints REST
+├─────────────────────┤
+│ Logique Métier      │  ← Facade, Services, Modèles
+├─────────────────────┤
+│ Couche Persistance  │  ← Repositories, Base de données
+└─────────────────────┘
+```
+
+**Caractéristiques Clés :**
+- ✅ Pattern Facade pour une communication simplifiée entre couches
+- ✅ Séparation claire des responsabilités
+- ✅ Principes SOLID appliqués
+- ✅ Règles de validation complètes
+
+### 🔑 Entités Principales
+
+1. **User** - Utilisateurs enregistrés avec authentification
+2. **Place** - Propriétés listées par les utilisateurs
+3. **Review** - Avis des utilisateurs sur les lieux
+4. **Amenity** - Services/installations (WiFi, piscine, etc.)
+
+### 📊 Règles Métier Clés
+
+| Règle | Description |
+|-------|-------------|
+| ✅ **Email Unique** | Chaque utilisateur doit avoir une adresse email unique |
+| ✅ **Sécurité Mot de Passe** | Mots de passe hashés avec bcrypt/argon2 (jamais en clair) |
+| ❌ **Pas d'Auto-évaluation** | Les utilisateurs ne peuvent pas noter leurs propres lieux |
+| ✅ **Un Avis Par Lieu** | Chaque utilisateur ne peut laisser qu'un seul avis par lieu |
+| ✅ **Coordonnées Valides** | Latitude ∈ [-90, 90], Longitude ∈ [-180, 180] |
+| ✅ **Prix Positif** | Les prix des lieux doivent être ≥ 0 |
+| ✅ **Plage de Notes** | Les notes doivent être entre 1 et 5 |
+
+### 🚀 Démarrage
+
+#### Consulter la Documentation
+
+1. Cloner le dépôt :
+```bash
+git clone https://github.com/yourusername/holbertonschool-hbnb.git
+cd holbertonschool-hbnb/part1
+```
+
+2. Ouvrir les fichiers de documentation dans l'ordre :
+   - Commencer par `0-packages.md` pour l'aperçu de l'architecture
+   - Puis `1-classes.md` pour les détails des entités
+   - Consulter `2-sequences.md` pour les flux API
+   - Lire `3-documentation.md` pour la documentation complète
+
+3. Tous les diagrammes utilisent la syntaxe **Mermaid** et s'affichent automatiquement sur GitHub
+
+#### Diagrammes Mermaid
+
+Tous les diagrammes UML sont créés avec Mermaid.js et s'affichent automatiquement sur GitHub. Pour les visualiser localement, vous pouvez utiliser :
+
+- [Mermaid Live Editor](https://mermaid.live/)
+- VS Code avec l'[extension Mermaid Preview](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+
+### 🛠️ Technologies & Outils
+
+- **Notation UML :** UML 2.x standard
+- **Outil de Diagrammes :** Mermaid.js
+- **Documentation :** Markdown
+- **Contrôle de Version :** Git/GitHub
+
+### 📖 Endpoints API Conçus
+
+| Endpoint | Méthode | Description |
+|----------|---------|-------------|
+| `/users` | POST | Enregistrer un nouvel utilisateur |
+| `/places` | POST | Créer un nouveau lieu (authentifié) |
+| `/places` | GET | Récupérer la liste des lieux (avec filtres) |
+| `/places/{id}/reviews` | POST | Soumettre un avis (authentifié) |
+
+### ✅ Validation & Gestion des Erreurs
+
+**Codes de Statut HTTP :**
+- `200` - Requête GET réussie
+- `201` - Ressource créée avec succès
+- `400` - Données invalides fournies
+- `401` - Authentification requise/invalide
+- `403` - Action interdite (ex: auto-évaluation)
+- `404` - Ressource introuvable
+- `409` - Conflit (email/avis dupliqué)
+- `503` - Service indisponible
+
+### 🔄 Prochaines Étapes
+
+Ceci est la Part 1 (Phase de Conception). Les prochaines phases incluent :
+
+- **Part 2 :** Implémentation de l'API REST
+- **Part 3 :** Intégration de la Base de Données
+- **Part 4 :** Interface Frontend
+
+### 📝 Licence
+
+Ce projet fait partie du curriculum de Holberton School.
+
+
+**© 2025 HBnB Evolution - Holberton School Project**
