@@ -1,4 +1,5 @@
-# High-Level class Diagram (Task 1)
+## High-Level Class Diagram (Task 1)
+
 ```mermaid
 classDiagram
     class User {
@@ -121,4 +122,4 @@ classDiagram
         <<legend>>
     }
     note for Legend "FR — Lecture :<br/>• Les **entités** (User, Place, Review, Amenity) sont stockées en base (UUID, timestamps, contraintes).<br/>• Les **Services** appliquent les règles (unicité email, hash, rating 1..5, no self-review, lat/lon valides, price≥0) et ne parlent pas SQL directement : ils passent par des **Repositories** (couche persistance, montrés dans le diagramme d’architecture).<br/><br/>EN — How to read:<br/>• **Entities** (User, Place, Review, Amenity) are persisted (UUID, timestamps, constraints).<br/>• **Services** enforce rules (unique email, hashing, rating 1..5, no self-review, valid lat/lon, price≥0) and never do raw SQL: they call **Repositories** (persistence layer, shown in the architecture diagram)."
-
+```
