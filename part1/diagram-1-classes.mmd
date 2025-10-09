@@ -1,0 +1,79 @@
+sequenceDiagram
+    autonumber
+    participant Client
+    participant API as API Controller
+    participant Facade as HBnB Facade
+    participant UserService as User Service
+    participant User as User Model
+    participant UserRepo as User Repository
+    participant DB as Database
+
+    %% =========================
+    %% CONTEXT NOTE (FR/EN)
+    %% =========================
+    Note over Client,DB: FR — Contexte :\n• Presentation = API Controller (réception requête HTTP)\n• Business = HBnB Facade + User Service + User (entité)\n• Persistence = User Repository + Database\nFlux attendu : Client → API → Facade → Service → Repo → DB → retour\n\nEN — Context:\n• Presentation = API Controller (HTTP entrypoint)\n• Business = HBnB Facade + User Service + User (entity)\n• Persistence = User Repository + Database\nExpected flow: Client → API → Facade → Service → Repo → DB → back
+
+    %% =========================
+    %% HAPPY PATH (201 Created)
+    %% =========================
+    Client->>+API: POST /users {firstName, lastName, email, password}
+    Note right of API: FR: L’API parse le JSON puis délègue au métier via la Facade.\nEN: API parses JSON, then delegates to domain via Facade.
+
+    API->>+Facade: registerUser(userData)
+    Note right of Facade: FR: Facade = porte d’entrée métier (évite d’appeler 10 services).\nEN: Facade = single domain entrypoint (no direct multi-service calls).
+
+    Facade->>+UserService: registerUser(userData)
+    Note right of UserService: FR: Le service applique les **règles métier**.\nEN: Service enforces **business rules**.
+
+    UserService->>UserService: validateUserData(userData)
+    UserService->>UserService: checkEmailFormat(email)
+    Note right of UserService: FR: Email doit être **valide** (format) et **unique**.\nEN: Email must be **valid** (format) and **unique**.
+
+    UserService->>UserService: hashPassword(password)
+    Note right of UserService: FR: Toujours **hasher** le mot de passe (jamais en clair).\nEN: Always **hash** password (never store plain text).
+
+    UserService->>+UserRepo: findByEmail(email)
+    UserRepo->>+DB: SELECT * FROM users WHERE email = ?
+    DB-->>-UserRepo: null (email not found)
+    UserRepo-->>-UserService: null
+    Note right of UserService: FR: OK, email libre → on peut créer l’utilisateur.\nEN: OK, email free → we can create the user.
+
+    UserService->>+User: new User(userData)
+    User->>User: generateId()
+    User->>User: setCreatedAt()
+    User->>User: setUpdatedAt()
+    User-->>-UserService: userInstance
+    Note right of User: FR: L’entité se construit avec UUID + timestamps auto.\nEN: Entity builds with UUID + auto timestamps.
+
+    UserService->>+UserRepo: save(userInstance)
+    UserRepo->>+DB: INSERT INTO users VALUES(...)
+    DB-->>-UserRepo: success
+    UserRepo-->>-UserService: savedUser
+    Note right of UserRepo: FR: Le Service **ne parle jamais SQL** directement — il passe par le Repository.\nEN: Service **never does raw SQL** — it goes through the Repository.
+
+    UserService-->>-Facade: savedUser
+    Facade-->>-API: savedUser
+    API-->>-Client: 201 Created {user: {...}}
+    Note over API,Client: FR: Réponse 201 sans champs sensibles (pas de password, ni de hash). \nEN: 201 response without sensitive fields (no password or hash).
+
+    %% =========================
+    %% ALTERNATIVES / ERRORS
+    %% =========================
+    alt FR: Email déjà existant | EN: Email already exists
+        UserRepo-->>UserService: existingUser
+        Note right of UserService: FR: Conflit — l’email est déjà pris.\nEN: Conflict — email already in use.
+        UserService-->>Facade: error 400 Bad Request
+        Facade-->>API: error 400
+        API-->>Client: 400 Bad Request {"error":"EMAIL_TAKEN"}
+    else FR: Format email invalide | EN: Invalid email format
+        Note right of UserService: FR: Validation de format échouée.\nEN: Email format validation failed.
+        UserService-->>Facade: error 400 Bad Request
+        Facade-->>API: error 400
+        API-->>Client: 400 Bad Request {"error":"INVALID_EMAIL"}
+    end
+
+    %% =========================
+    %% GLOBAL NOTES (FR/EN)
+    %% =========================
+    Note over Client,DB: FR — Idées clés :\n• Séparation des couches: Presentation → Business → Persistence (sens unique).\n• Sécurité: hash password (jamais stocker en clair), ne jamais renvoyer le hash.\n• Erreurs cohérentes: 400 si email invalide ou déjà pris.\nEN — Key ideas:\n• Layered separation: Presentation → Business → Persistence (one-way).\n• Security: hash passwords, never return/store plain password or hash in responses.\n• Consistent errors: 400 for invalid/duplicate email.
+
