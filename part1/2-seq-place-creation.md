@@ -1,3 +1,5 @@
+## High-Level Class Diagram (Task 2)
+
 sequenceDiagram
     autonumber
     actor Client
