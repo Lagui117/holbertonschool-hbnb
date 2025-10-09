@@ -1,6 +1,7 @@
 ## High-Level Class Diagram (Task 1)
 
 ```mermaid
+```mermaid
 classDiagram
 class User {
     -String id (UUID)
@@ -17,7 +18,18 @@ class User {
     +validateEmail()
     +hashPassword()
 }
-note for User "FR: Utilisateur.\n- email unique et format valide (validateEmail)\n- password: stocker un hash (hashPassword)\n- isAdmin: droits etendus\n- createdAt/updatedAt: automatiques\nEN: User.\n- email must be unique and valid\n- password: store a hash\n- isAdmin: elevated rights\n- timestamps auto-managed"
+note for User "
+FR: Utilisateur.
+- email unique et format valide (validateEmail)
+- password: stocker un hash (hashPassword)
+- isAdmin: droits etendus
+- createdAt/updatedAt: automatiques
+EN: User.
+- email must be unique and valid
+- password: store a hash
+- isAdmin: elevated rights
+- timestamps auto-managed
+"
 
 class Place {
     -String id (UUID)
@@ -34,7 +46,18 @@ class Place {
     +validateCoordinates()
     +calculateDistance()
 }
-note for Place "FR: Lieu.\n- price >= 0\n- latitude in [-90..90], longitude in [-180..180]\n- proprietaire via User->Place\n- calculateDistance: utilitaire geo\nEN: Place.\n- price >= 0\n- lat in [-90..90], lon in [-180..180]\n- owner via User->Place\n- calculateDistance: geo helper"
+note for Place "
+FR: Lieu.
+- price >= 0
+- latitude in [-90..90], longitude in [-180..180]
+- proprietaire via User->Place
+- calculateDistance: utilitaire geo
+EN: Place.
+- price >= 0
+- lat in [-90..90], lon in [-180..180]
+- owner via User->Place
+- calculateDistance: geo helper
+"
 
 class Review {
     -String id (UUID)
@@ -47,7 +70,16 @@ class Review {
     +deleteReview()
     +validateRating()
 }
-note for Review "FR: Avis.\n- rating in [1..5]\n- pas d'auto-review (auteur != proprietaire)\n- option: 1 avis par (user, place)\nEN: Review.\n- rating in [1..5]\n- no self-review (author != owner)\n- optional: at most 1 per (user, place)"
+note for Review "
+FR: Avis.
+- rating in [1..5]
+- pas d'auto-review (auteur != proprietaire)
+- option: 1 avis par (user, place)
+EN: Review.
+- rating in [1..5]
+- no self-review (author != owner)
+- optional: at most 1 per (user, place)
+"
 
 class Amenity {
     -String id (UUID)
@@ -59,7 +91,14 @@ class Amenity {
     +updateAmenity()
     +deleteAmenity()
 }
-note for Amenity "FR: Equipement.\n- name idealement unique et normalise\n- M:N avec Place\nEN: Amenity.\n- name ideally unique/normalized\n- M:N with Place"
+note for Amenity "
+FR: Equipement.
+- name idealement unique et normalise
+- M:N avec Place
+EN: Amenity.
+- name ideally unique/normalized
+- M:N with Place
+"
 
 class UserService {
     +registerUser(userData)
@@ -69,7 +108,16 @@ class UserService {
     +deleteUser(id)
     +getAllUsers()
 }
-note for UserService "FR: Service Utilisateur.\n- applique: email unique, hash password\n- login: verifie le hash\n- pas de SQL direct (via repo)\nEN: User Service.\n- enforces unique email, hashing\n- login checks hash\n- no raw SQL (via repo)"
+note for UserService "
+FR: Service Utilisateur.
+- applique: email unique, hash password
+- login: verifie le hash
+- pas de SQL direct (via repo)
+EN: User Service.
+- enforces unique email, hashing
+- login checks hash
+- no raw SQL (via repo)
+"
 
 class PlaceService {
     +createPlace(placeData, ownerId)
@@ -79,7 +127,16 @@ class PlaceService {
     +getPlacesByOwner(ownerId)
     +searchPlaces(criteria)
 }
-note for PlaceService "FR: Service Lieu.\n- verifie owner pour update/delete\n- valide price et coordonnees\n- search: filtres + pagination\nEN: Place Service.\n- validates owner for update/delete\n- validates price and coords\n- search: filters + pagination"
+note for PlaceService "
+FR: Service Lieu.
+- verifie owner pour update/delete
+- valide price et coordonnees
+- search: filtres + pagination
+EN: Place Service.
+- validates owner for update/delete
+- validates price and coords
+- search: filters + pagination
+"
 
 class ReviewService {
     +createReview(reviewData, userId, placeId)
@@ -89,7 +146,16 @@ class ReviewService {
     +getReviewsByPlace(placeId)
     +getReviewsByUser(userId)
 }
-note for ReviewService "FR: Service Avis.\n- rating [1..5], pas d'auto-review\n- au plus 1 avis par (user, place)\n- controle auteur pour update/delete\nEN: Review Service.\n- rating [1..5], no self-review\n- at most 1 per (user, place)\n- author check on update/delete"
+note for ReviewService "
+FR: Service Avis.
+- rating [1..5], pas d'auto-review
+- au plus 1 avis par (user, place)
+- controle auteur pour update/delete
+EN: Review Service.
+- rating [1..5], no self-review
+- at most 1 per (user, place)
+- author check on update/delete
+"
 
 class AmenityService {
     +createAmenity(amenityData)
@@ -98,14 +164,20 @@ class AmenityService {
     +deleteAmenity(id)
     +getAllAmenities()
 }
-note for AmenityService "FR: Service Equipement.\n- valide nom (unicite, normalisation)\n- CRUD standard\nEN: Amenity Service.\n- validate name (unique/normalized)\n- standard CRUD"
+note for AmenityService "
+FR: Service Equipement.
+- valide nom (unicite, normalisation)
+- CRUD standard
+EN: Amenity Service.
+- validate name (unique/normalized)
+- standard CRUD
+"
 
 %% Relationships
 User ||--o{ Place : owns
 User ||--o{ Review : writes
 Place ||--o{ Review : has
 Place }o--o{ Amenity : includes
-
 
 UserService --> User : manages
 PlaceService --> Place : manages
@@ -115,5 +187,4 @@ AmenityService --> Amenity : manages
 PlaceService --> User : validates_owner
 ReviewService --> User : validates_author
 ReviewService --> Place : validates_place
-
 ```
