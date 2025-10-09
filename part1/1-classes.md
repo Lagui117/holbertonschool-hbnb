@@ -17,18 +17,6 @@ class User {
     +validateEmail()
     +hashPassword()
 }
-note for User "
-FR: Utilisateur.
-- email unique et format valide (validateEmail)
-- password: stocker un hash (hashPassword)
-- isAdmin: droits etendus
-- createdAt/updatedAt: automatiques
-EN: User.
-- email must be unique and valid
-- password: store a hash
-- isAdmin: elevated rights
-- timestamps auto-managed
-"
 
 class Place {
     -String id (UUID)
@@ -45,18 +33,6 @@ class Place {
     +validateCoordinates()
     +calculateDistance()
 }
-note for Place "
-FR: Lieu.
-- price >= 0
-- latitude in [-90..90], longitude in [-180..180]
-- proprietaire via User->Place
-- calculateDistance: utilitaire geo
-EN: Place.
-- price >= 0
-- lat in [-90..90], lon in [-180..180]
-- owner via User->Place
-- calculateDistance: geo helper
-"
 
 class Review {
     -String id (UUID)
@@ -69,16 +45,6 @@ class Review {
     +deleteReview()
     +validateRating()
 }
-note for Review "
-FR: Avis.
-- rating in [1..5]
-- pas d'auto-review (auteur != proprietaire)
-- option: 1 avis par (user, place)
-EN: Review.
-- rating in [1..5]
-- no self-review (author != owner)
-- optional: at most 1 per (user, place)
-"
 
 class Amenity {
     -String id (UUID)
@@ -90,14 +56,6 @@ class Amenity {
     +updateAmenity()
     +deleteAmenity()
 }
-note for Amenity "
-FR: Equipement.
-- name idealement unique et normalise
-- M:N avec Place
-EN: Amenity.
-- name ideally unique/normalized
-- M:N with Place
-"
 
 class UserService {
     +registerUser(userData)
@@ -107,16 +65,6 @@ class UserService {
     +deleteUser(id)
     +getAllUsers()
 }
-note for UserService "
-FR: Service Utilisateur.
-- applique: email unique, hash password
-- login: verifie le hash
-- pas de SQL direct (via repo)
-EN: User Service.
-- enforces unique email, hashing
-- login checks hash
-- no raw SQL (via repo)
-"
 
 class PlaceService {
     +createPlace(placeData, ownerId)
@@ -126,16 +74,6 @@ class PlaceService {
     +getPlacesByOwner(ownerId)
     +searchPlaces(criteria)
 }
-note for PlaceService "
-FR: Service Lieu.
-- verifie owner pour update/delete
-- valide price et coordonnees
-- search: filtres + pagination
-EN: Place Service.
-- validates owner for update/delete
-- validates price and coords
-- search: filters + pagination
-"
 
 class ReviewService {
     +createReview(reviewData, userId, placeId)
@@ -145,16 +83,6 @@ class ReviewService {
     +getReviewsByPlace(placeId)
     +getReviewsByUser(userId)
 }
-note for ReviewService "
-FR: Service Avis.
-- rating [1..5], pas d'auto-review
-- au plus 1 avis par (user, place)
-- controle auteur pour update/delete
-EN: Review Service.
-- rating [1..5], no self-review
-- at most 1 per (user, place)
-- author check on update/delete
-"
 
 class AmenityService {
     +createAmenity(amenityData)
@@ -163,14 +91,6 @@ class AmenityService {
     +deleteAmenity(id)
     +getAllAmenities()
 }
-note for AmenityService "
-FR: Service Equipement.
-- valide nom (unicite, normalisation)
-- CRUD standard
-EN: Amenity Service.
-- validate name (unique/normalized)
-- standard CRUD
-"
 
 %% Relationships
 User ||--o{ Place : owns
@@ -187,3 +107,16 @@ PlaceService --> User : validates_owner
 ReviewService --> User : validates_author
 ReviewService --> Place : validates_place
 ```
+**User (FR)**  
+- email unique et au bon format  
+- mot de passe stocké sous forme de hash (jamais en clair)  
+- isAdmin = droits étendus  
+- timestamps automatiques (createdAt/updatedAt)
+
+**User (EN)**  
+- email must be unique and valid  
+- password stored as a hash (never plain text)  
+- isAdmin = elevated privileges  
+- automatic timestamps (createdAt/updatedAt)
+
+... (Place, Review, Amenity, Services, etc.)
