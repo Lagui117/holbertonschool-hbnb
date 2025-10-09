@@ -107,16 +107,3 @@ PlaceService --> User : validates_owner
 ReviewService --> User : validates_author
 ReviewService --> Place : validates_place
 ```
-**User (FR)**  
-- email unique et au bon format  
-- mot de passe stocké sous forme de hash (jamais en clair)  
-- isAdmin = droits étendus  
-- timestamps automatiques (createdAt/updatedAt)
-
-**User (EN)**  
-- email must be unique and valid  
-- password stored as a hash (never plain text)  
-- isAdmin = elevated privileges  
-- automatic timestamps (createdAt/updatedAt)
-
-... (Place, Review, Amenity, Services, etc.)
