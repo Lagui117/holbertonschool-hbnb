@@ -1,7 +1,6 @@
 ## High-Level Class Diagram (Task 1)
 
 ```mermaid
-```mermaid
 classDiagram
 class User {
     -String id (UUID)
