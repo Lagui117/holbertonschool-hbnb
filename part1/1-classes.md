@@ -106,6 +106,7 @@ User ||--o{ Review : writes
 Place ||--o{ Review : has
 Place }o--o{ Amenity : includes
 
+
 UserService --> User : manages
 PlaceService --> Place : manages
 ReviewService --> Review : manages
