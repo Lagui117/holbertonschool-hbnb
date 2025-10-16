@@ -27,8 +27,20 @@ class InMemoryRepository:
         return list(self._storage.get(class_name, {}).values())
 
     def update(self, obj):
-        """Met à jour un objet"""
-        obj.save()
+        """Update an existing object"""
+        class_name = obj.__class__.__name__
+        obj_id = obj.id
+        
+        # Vérifie que l'objet existe avant de le mettre à jour
+        if class_name not in self._storage or obj_id not in self._storage[class_name]:
+            raise ValueError(f"{class_name} with id {obj_id} not found")
+        
+        # Met à jour le timestamp si la méthode save() existe
+        if hasattr(obj, 'save'):
+            obj.save()
+        
+        # Stocke l'objet mis à jour
+        self._storage[class_name][obj_id] = obj
         return obj
 
     def delete(self, obj):

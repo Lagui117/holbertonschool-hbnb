@@ -55,4 +55,3 @@ def update_user(user_id):
         if "not found" in str(e).lower():
             return jsonify({'error': str(e)}), 404
         return jsonify({'error': str(e)}), 400
-    

@@ -5,10 +5,10 @@ Tests data storage and retrieval operations
 
 import unittest
 from PL.in_memory_repository import InMemoryRepository
-from business.user import User
-from business.amenity import Amenity
-from business.place import Place
-from business.review import Review
+from BLL.user import User
+from BLL.amenity import Amenity
+from BLL.place import Place
+from BLL.review import Review
 class TestInMemoryRepository(unittest.TestCase):
     """Test cases for InMemoryRepository"""
     def setUp(self):
