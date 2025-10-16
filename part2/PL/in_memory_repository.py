@@ -17,7 +17,7 @@ class InMemoryRepository:
 
     def add(self, obj):
         """Ajoute un objet"""
-        class_name = obj.class.name
+        class_name = obj.__class__.__name__
         if class_name not in self._storage:
             self._storage[class_name] = {}
         self._storage[class_name][obj.id] = obj
@@ -40,7 +40,7 @@ class InMemoryRepository:
 
     def delete(self, obj):
         """Supprime un objet"""
-        class_name = obj.class.name
+        class_name = obj.__class__.__name__
         if class_name in self._storage and obj.id in self._storage[class_name]:
             del self._storage[class_name][obj.id]
             return True
