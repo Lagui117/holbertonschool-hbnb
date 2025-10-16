@@ -2,7 +2,7 @@
 Application Flask principale - HBnB Partie 2
 """
 from flask import Flask
-from business.facade import HBnBFacade
+from FACADE.facade import HBnBFacade
 
 # Créer l'application Flask
 app = Flask(__name__)
@@ -11,10 +11,11 @@ app = Flask(__name__)
 facade = HBnBFacade()
 
 # Importer et enregistrer les blueprints
-from api.users import users_bp
-from api.amenities import amenities_bp
-from api.places import places_bp
-from api.reviews import reviews_bp
+from API.users import users_bp
+from API.amenities import amenities_bp
+from API.places import places_bp
+from API.reviews import reviews_bp
+
 
 app.register_blueprint(users_bp, url_prefix='/api/v1/users')
 app.register_blueprint(amenities_bp, url_prefix='/api/v1/amenities')

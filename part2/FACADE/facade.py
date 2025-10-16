@@ -1,11 +1,12 @@
 """
 HBnBFacade - Pattern Façade
 """
-from business.user import User
-from business.place import Place
-from business.review import Review
-from business.amenity import Amenity
-from persistence.in_memory_repository import InMemoryRepository
+from BLL.user import User
+from BLL.place import Place
+from BLL.review import Review
+from BLL.amenity import Amenity
+from PL.in_memory_repository import InMemoryRepository
+
 
 
 class HBnBFacade:
