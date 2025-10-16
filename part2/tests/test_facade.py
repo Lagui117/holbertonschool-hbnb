@@ -3,7 +3,7 @@ Unit tests for HBnBFacade (FACADE)
 Tests orchestration between layers
 """
 import unittest
-from business.facade import HBnBFacade
+from FACADE.facade import HBnBFacade
 class TestHBnBFacade(unittest.TestCase):
     """Test cases for HBnBFacade"""
     def setUp(self):

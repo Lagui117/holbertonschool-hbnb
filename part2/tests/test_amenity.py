@@ -3,7 +3,7 @@ Unit tests for Amenity entity (BLL)
 Tests business logic and validations
 """
 import unittest
-from business.amenity import Amenity
+from BLL.amenity import Amenity
 class TestAmenity(unittest.TestCase):
     """Test cases for Amenity entity"""
     def test_amenity_creation_valid(self):

@@ -4,7 +4,7 @@ Tests data storage and retrieval operations
 """
 
 import unittest
-from persistence.in_memory_repository import InMemoryRepository
+from PL.in_memory_repository import InMemoryRepository
 from business.user import User
 from business.amenity import Amenity
 from business.place import Place

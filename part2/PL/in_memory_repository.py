@@ -4,33 +4,26 @@ InMemoryRepository - Persistance en mémoire
 
 
 class InMemoryRepository:
-    """Repository stockant les données en mémoire"""
+    def __init__(self):
+        """Initialize the in-memory storage"""
+        self._storage = {}
 
-    def init(self):
-        """Initialise les dictionnaires de stockage"""
-        self._storage = {
-            'User': {},
-            'Place': {},
-            'Review': {},
-            'Amenity': {}
-        }
-
-    def add(self, obj):
-        """Ajoute un objet"""
-        class_name = obj.__class__.__name__
+    def add(self, entity):
+        """Add an entity to the repository"""
+        class_name = entity.__class__.__name__
         if class_name not in self._storage:
             self._storage[class_name] = {}
-        self._storage[class_name][obj.id] = obj
-        return obj
+        self._storage[class_name][entity.id] = entity
+        return entity
 
-    def get(self, cls, obj_id):
-        """Récupère un objet par ID"""
-        class_name = cls.name
-        return self._storage.get(class_name, {}).get(obj_id)
+    def get(self, cls, entity_id):
+        """Get an entity by class and ID"""
+        class_name = cls.__name__
+        return self._storage.get(class_name, {}).get(entity_id)
 
     def all(self, cls):
-        """Récupère tous les objets d'un type"""
-        class_name = cls.name
+        """Get all entities of a class"""
+        class_name = cls.__name__
         return list(self._storage.get(class_name, {}).values())
 
     def update(self, obj):

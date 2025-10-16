@@ -3,7 +3,7 @@ Unit tests for User entity (BLL)
 Tests business logic and validations
 """
 import unittest
-from business.user import User
+from BLL.user import User
 class TestUser(unittest.TestCase):
     """Test cases for User entity"""
     def test_user_creation_valid(self):

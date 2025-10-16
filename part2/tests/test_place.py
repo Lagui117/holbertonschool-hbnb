@@ -3,7 +3,7 @@ Unit tests for Place entity (BLL)
 Tests business logic and validations
 """
 import unittest
-from business.place import Place
+from BLL.place import Place
 class TestPlace(unittest.TestCase):
     """Test cases for Place entity"""
     def test_place_creation_valid(self):

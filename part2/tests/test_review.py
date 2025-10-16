@@ -3,7 +3,7 @@ Unit tests for Review entity (BLL)
 Tests business logic and validations
 """
 import unittest
-from business.review import Review
+from BLL.review import Review
 class TestReview(unittest.TestCase):
     """Test cases for Review entity"""
     def test_review_creation_valid(self):
