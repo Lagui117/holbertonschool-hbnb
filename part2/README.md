@@ -168,8 +168,7 @@ GET /api/v1/amenities/
 
 ## 🏃‍♂️ Running the Application
 ```bash
-python run.py  # Server starts at http://localhost:5000
-```
+python run.py  # Server starts at http://127.0.0.1:5000
 
 ---
 ## 🌟 **Summary**: This project implements a comprehensive REST API for a BnB platform using Flask, featuring clean architecture with Facade and Repository patterns, managing users, places, reviews, and amenities through a well-structured endpoint system.
