@@ -215,7 +215,7 @@ erDiagram
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/holbertonschool-hbnb.git
+git clone https://github.com/(Lagui117 or yassin-info)/holbertonschool-hbnb.git
 cd holbertonschool-hbnb/part3
 
 # Create virtual environment
