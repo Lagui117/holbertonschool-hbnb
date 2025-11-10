@@ -79,75 +79,125 @@ By completing this project, you will:
 - Place → Review: One-to-Many
 - Place ↔ Amenity: Many-to-Many
 
-### 📝 Tasks Overview
+### 🆕 New Features in Part 3
 
-#### Task 0: Application Factory Configuration
-Update Flask Application Factory to handle different configurations (development, testing, production).
+Part 3 represents a major evolution from Part 2, transitioning from an in-memory prototype to a production-ready application with authentication and persistent storage.
 
-#### Task 1: User Model with Password Hashing
-Enhance User model with secure password storage using bcrypt:
-- Hash passwords before storage
-- Implement password verification
-- Exclude passwords from GET responses
+#### Major Additions from Part 2
 
-#### Task 2: JWT Authentication
-Implement JWT-based authentication:
-- User login endpoint
-- JWT token generation and verification
-- Protected endpoints requiring authentication
+**1. Authentication & Security**
+- JWT-based authentication system
+- Secure password hashing with bcrypt
+- Token-based session management
+- Role-based access control (RBAC)
 
-#### Task 3: Authenticated User Access
-Secure endpoints for authenticated users:
-- Create/update/delete own places
-- Create/update own reviews
-- Update own user details
-- Ownership validation
+**2. Database Persistence**
+- SQLite for development environment
+- MySQL support for production
+- SQLAlchemy ORM integration
+- Complete data persistence layer
 
-#### Task 4: Administrator Access
-Implement role-based access control for administrators:
-- Create and manage any user
-- Modify any user's details
-- Manage amenities
-- Bypass ownership restrictions
+**3. Enhanced User Management**
+- User registration with secure passwords
+- Login system with JWT tokens
+- Admin privileges and role management
+- User profile management
 
-#### Task 5: SQLAlchemy Repository
-Replace in-memory storage with SQLAlchemy:
-- Create SQLAlchemyRepository
-- Implement CRUD operations
-- Maintain repository pattern interface
-
-#### Task 6: User Entity Mapping
-Map User entity to SQLAlchemy model:
-- Define database schema
-- Implement UserRepository
-- Update Facade layer
-
-#### Task 7: Entity Mapping (Place, Review, Amenity)
-Map remaining entities to database:
-- Place model with attributes
-- Review model with attributes
-- Amenity model with attributes
-- Implement respective repositories
-
-#### Task 8: Entity Relationships
-Define relationships between entities:
-- One-to-Many relationships
-- Many-to-Many relationships
+**4. Database Relationships**
+- One-to-Many: User → Places, User → Reviews, Place → Reviews
+- Many-to-Many: Place ↔ Amenities
 - Foreign key constraints
-- Bidirectional navigation
+- Referential integrity
 
-#### Task 9: SQL Scripts
-Create SQL scripts for:
-- Database schema generation
-- Initial data population
-- Administrator user creation
-- Amenity initialization
+### 📊 Database Schema Explanation
 
-#### Task 10: Database Diagrams
-Generate ER diagrams using Mermaid.js:
-- Visual representation of schema
-- Entity relationships
-- Documentation integration
+#### Understanding the ER Diagram
+
+The Entity-Relationship (ER) diagram visualizes how data is organized and connected in the HBnB application.
+
+```mermaid
+erDiagram
+    USER ||--o{ PLACE : owns
+    USER ||--o{ REVIEW : writes
+    PLACE ||--o{ REVIEW : has
+    PLACE }o--o{ AMENITY : includes
+
+    USER {
+        int id PK
+        string first_name
+        string last_name
+        string email UK
+        string password
+        boolean is_admin
+        datetime created_at
+        datetime updated_at
+    }
+
+    PLACE {
+        int id PK
+        string title
+        string description
+        float price
+        float latitude
+        float longitude
+        int owner_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    REVIEW {
+        int id PK
+        string text
+        int rating
+        int place_id FK
+        int user_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    AMENITY {
+        int id PK
+        string name
+        datetime created_at
+        datetime updated_at
+    }
+```
+
+#### Database Keys Explained
+
+**Primary Keys (PK) - Clés Primaires**
+- Unique identifier for each record in a table
+- Auto-incremented integer
+- Every table has an `id` field as PK
+- Example: `USER.id = 1` uniquely identifies one user
+
+**Foreign Keys (FK) - Clés Étrangères**
+- Links records between tables
+- References a Primary Key in another table
+- Ensures referential integrity
+- Examples:
+  - `PLACE.owner_id` → references `USER.id`
+  - `REVIEW.place_id` → references `PLACE.id`
+  - `REVIEW.user_id` → references `USER.id`
+
+**Unique Keys (UK) - Clés Uniques**
+- Ensures no duplicate values in a column
+- Can be NULL (unlike PK)
+- Example: `USER.email` must be unique (no two users with same email)
+
+#### Relationship Types
+
+**One-to-Many (||--o{) - Un-à-Plusieurs**
+- One record in Table A relates to many records in Table B
+- Examples:
+  - One User owns many Places
+  - One User writes many Reviews
+  - One Place has many Reviews
+
+**Many-to-Many (}o--o{) - Plusieurs-à-Plusieurs**
+- Many records in Table A relate to many records in Table B
+- Requires an association table
+- Example: Places ↔ Amenities (via `place_amenity_association` table)
 
 ### 🔧 Technologies Used
 
