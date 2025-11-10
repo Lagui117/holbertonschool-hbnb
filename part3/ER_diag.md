@@ -179,33 +179,3 @@ graph TD
     style D fill:#e1ffe1
 ```
 
-## Comment Utiliser ce Diagramme / How to Use This Diagram
-
-### FR 🇫🇷
-
-1. **Sur GitHub** : Le code Mermaid s'affiche automatiquement dans les fichiers `.md`
-2. **Éditeur en ligne** : Copiez le code dans [Mermaid Live Editor](https://mermaid.live/)
-3. **Export** : Exportez en PNG, SVG ou PDF depuis l'éditeur
-4. **Documentation** : Intégrez directement dans votre README.md
-
-### EN 🇬🇧
-
-1. **On GitHub**: Mermaid code renders automatically in `.md` files
-2. **Online editor**: Copy code to [Mermaid Live Editor](https://mermaid.live/)
-3. **Export**: Export as PNG, SVG or PDF from the editor
-4. **Documentation**: Integrate directly into your README.md
-
----
-
-## Installation pour Génération Locale / Local Generation Setup
-
-```bash
-# Installer Mermaid CLI
-npm install -g @mermaid-js/mermaid-cli
-
-# Générer un PNG
-mmdc -i database-diagram.md -o database-diagram.png
-
-# Générer un SVG
-mmdc -i database-diagram.md -o database-diagram.svg
-```
