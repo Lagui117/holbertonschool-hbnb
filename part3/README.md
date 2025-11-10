@@ -485,7 +485,3 @@ coverage report
 
 - **Yassin Jaghmim**
 - **Guillaume Watelet**
-
-### 📄 Licence
-
-Ce projet fait partie du cursus de Holberton School.
