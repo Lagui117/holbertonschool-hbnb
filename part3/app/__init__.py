@@ -29,13 +29,27 @@ def create_app(config_class=DevelopmentConfig):
         # Database tables will be created
         db.create_all()
 
-    # Initialize Flask-RESTX API avec doc='/' pour mettre Swagger à la racine
+    #  Configuration JWT pour Swagger UI (ajoute le bouton Authorize)
+    authorizations = {
+        'Bearer': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+            'description': "JWT Authorization header using the Bearer scheme. \n\n"
+                          "Enter: **'Bearer &lt;token&gt;'**\n\n"
+                          "Example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'"
+        }
+    }
+
+    # Initialize Flask-RESTX API avec JWT authorizations
     api = Api(
         app, 
         version='1.0', 
         title='HBnB API', 
-        description='HBnB Application API', 
-        doc='/'  # Documentation Swagger à la racine
+        description='HBnB Application API with JWT Authentication', 
+        doc='/',  # Documentation Swagger à la racine
+        authorizations=authorizations,  #  Active les autorisations JWT
+        security='Bearer'  #  Active la sécurité JWT par défaut
     )
 
     # Register the namespaces
