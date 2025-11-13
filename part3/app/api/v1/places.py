@@ -36,12 +36,12 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        current_user = get_jwt_identity()  # Get the authenticated user's identity
+        current_user = get_jwt_identity()  # Get the authenticated user's identity (user ID)
         place_data = api.payload
 
         try:
             # Set the owner_id to the authenticated user's ID
-            place_data['owner_id'] = current_user['id']
+            place_data['owner_id'] = current_user
 
             # Create place using the facade
             new_place = facade.create_place(place_data)
@@ -103,7 +103,7 @@ class PlaceResource(Resource):
     @api.response(400, "Invalid input data")
     def put(self, place_id):
         """Update a place's information (Admins can bypass ownership restrictions)"""
-        current_user = get_jwt_identity()  # Get the authenticated user's identity
+        current_user = get_jwt_identity()  # Get the authenticated user's identity (user ID)
         claims = get_jwt()  # Retrieve all JWT claims
         is_admin = claims.get('is_admin', False)  # Check if user is admin
 
@@ -114,7 +114,7 @@ class PlaceResource(Resource):
                 return {'error': "Place not found"}, 404
             
             # Ownership check: Admins can bypass this restriction
-            if not is_admin and str(place.owner.id) != current_user['id']:
+            if not is_admin and str(place.owner.id) != current_user:
                 return {'error': "Unauthorized action"}, 403
 
             update_data = api.payload
@@ -147,7 +147,7 @@ class PlaceResource(Resource):
     @api.response(403, "Unauthorized action")
     def delete(self, place_id):
         """Delete a place (Admins can bypass ownership restrictions)"""
-        current_user = get_jwt_identity()  # Get the authenticated user's identity
+        current_user = get_jwt_identity()  # Get the authenticated user's identity (user ID)
         claims = get_jwt()  # Retrieve all JWT claims
         is_admin = claims.get('is_admin', False)  # Check if user is admin
 
@@ -158,7 +158,7 @@ class PlaceResource(Resource):
                 return {'error': "Place not found"}, 404
             
             # Ownership check: Admins can bypass this restriction
-            if not is_admin and str(place.owner.id) != current_user['id']:
+            if not is_admin and str(place.owner.id) != current_user:
                 return {'error': "Unauthorized action"}, 403
 
             logger.debug(f"Deleting place {place_id}")

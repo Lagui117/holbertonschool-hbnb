@@ -92,11 +92,11 @@ class UserResource(Resource):
     @api.response(403, "Unauthorized action")
     def put(self, id):
         """Update user details"""
-        current_user = get_jwt_identity()  # Get the authenticated user's identity
+        current_user = get_jwt_identity()  # Get the authenticated user's identity (user ID)
         is_admin = is_admin_user()
 
         # Check if the authenticated user is trying to modify their own details or is an admin
-        if not is_admin and str(current_user['id']) != id:
+        if not is_admin and str(current_user) != id:
             return {'error': "Unauthorized action"}, 403
 
         from app import bcrypt  # Import différé pour éviter les imports circulaires
