@@ -23,7 +23,6 @@ class Login(Resource):
         if not user or not user.verify_password(password):
             return {'error': 'Invalid credentials'}, 401
         access_token = create_access_token(
-            identity=str(user.id),
-            additional_claims={'is_admin': bool(user.is_admin)}
-        )
+           identity=str(user.id),
+            additional_claims={"is_admin": user.is_admin})
         return {'access_token': access_token}, 200

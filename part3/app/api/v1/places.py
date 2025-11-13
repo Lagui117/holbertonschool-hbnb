@@ -222,7 +222,6 @@ class PlaceResource(Resource):
             'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            'owner_id': place.owner.id,
             'amenities': [amenity.id for amenity in place.amenities]
         }, 200
 

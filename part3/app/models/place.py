@@ -50,7 +50,7 @@ class Place(BaseModel, db.Model):
 
     # ==================== CLÉS ÉTRANGÈRES / FOREIGN KEYS ====================
     
-    owner_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    
 
     # ==================== RELATIONS / RELATIONSHIPS ====================
     
