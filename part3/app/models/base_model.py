@@ -1,25 +1,30 @@
 # app/models/base_model.py
-import uuid
 from datetime import datetime
-from app import db  # Import de SQLAlchemy pour que BaseModel soit un modèle ORM
-from sqlalchemy import Column, String, DateTime
+from app import db
+from sqlalchemy import Column, DateTime
 
 class BaseModel(db.Model):
-    __abstract__ = True  # Indique que cette classe ne doit pas créer de table
+    """
+    Classe de base abstraite pour tous les modèles.
+    Fournit les champs created_at / updated_at et des méthodes utilitaires.
+    """
+    __abstract__ = True  # Ne crée pas de table dans la base
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    # Chaque modèle concret (User, Place, Review, etc.)
+    # définira son propre 'id = Column(Integer, primary_key=True, autoincrement=True)'
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow, nullable=False)
 
     def save(self):
-        """Update the updated_at timestamp whenever the object is modified"""
+        """Enregistre ou met à jour l'objet dans la base."""
         self.updated_at = datetime.utcnow()
         db.session.add(self)
         db.session.commit()
 
-    def update(self, data):
-        """Update the attributes of the object based on the provided dictionary"""
-        for key, value in data.items():
+    def update(self, data: dict):
+        """Met à jour les attributs de l'objet selon le dictionnaire donné."""
+        for key, value in (data or {}).items():
             if hasattr(self, key):
                 setattr(self, key, value)
-        self.save()  # Update the updated_at timestamp
+        self.save()

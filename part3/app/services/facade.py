@@ -1,4 +1,6 @@
+# app/service/facade.py
 import logging
+from app import db
 from app.persistence.user_repository import UserRepository
 from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
@@ -8,6 +10,7 @@ from app.models.review import Review
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 
 class HBnBFacade:
     _instance = None
@@ -20,17 +23,38 @@ class HBnBFacade:
 
     def __init__(self):
         if not self._initialized:
-            # Use UserRepository for User and SQLAlchemyRepository for others
+            # Repos
             self.user_repo = UserRepository()
             self.place_repo = SQLAlchemyRepository(Place)
             self.amenity_repo = SQLAlchemyRepository(Amenity)
             self.review_repo = SQLAlchemyRepository(Review)
             self._initialized = True
 
-    def create_user(self, user_data):
+    # ----------------------------------------------------------------------
+    # USERS
+    # ----------------------------------------------------------------------
+
+    def create_user(self, user_data: dict):
+        """
+        Crée un utilisateur "user" standard.
+        - Ignore toute tentative d'injecter is_admin depuis le client.
+        - Le modèle User hash déjà le password en __init__ si on passe un mot de passe en clair.
+        """
         logger.debug(f"Creating user with data: {user_data}")
+
+        # Champs autorisés à la création
+        safe = {
+            k: v for k, v in (user_data or {}).items()
+            if k in {'first_name', 'last_name', 'email', 'password'}
+        }
+
+        # Défense en profondeur : forcer is_admin à False côté serveur
+        safe.pop('is_admin', None)
+
         try:
-            user = self.user_repo.create(**user_data)
+            user = self.user_repo.create(**safe)  # => User.__init__ fera le hash si password en clair
+            user.is_admin = False
+            db.session.commit()
             logger.debug(f"User created with ID: {user.id}")
             return user
         except ValueError as e:
@@ -59,18 +83,62 @@ class HBnBFacade:
         """Retrieve all users from the repository"""
         return self.user_repo.get_all()
 
-    def update_user(self, user_id, user_data):
-        """Update user with new data"""
+    def update_user(self, user_id, user_data: dict):
+        """
+        Met à jour un user (self/admin). On interdit toute modif de is_admin ici.
+        On ne traite ici QUE first_name / last_name (le reste est géré ailleurs).
+        """
         try:
-            user = self.user_repo.update(user_id, user_data)
+            if not user_data:
+                return self.user_repo.get_by_id(user_id)
+
+            data = dict(user_data)
+            # Interdictions
+            data.pop('is_admin', None)
+            data.pop('email', None)
+            data.pop('password', None)
+
+            allowed = {k: v for k, v in data.items() if k in {'first_name', 'last_name'}}
+            if not allowed:
+                # Rien à mettre à jour -> retourne l'utilisateur tel quel
+                return self.user_repo.get_by_id(user_id)
+
+            user = self.user_repo.update(user_id, allowed)
             return user
         except ValueError as e:
             logger.error(f"Error updating user: {e}")
             raise
 
+    def delete_user(self, user_id):
+        """
+        Supprime un utilisateur par son ID.
+        Retourne True si la suppression a réussi, False sinon.
+        """
+        logger.debug(f"Attempting to delete user with ID: {user_id}")
+        try:
+            self.user_repo.delete(user_id)
+            logger.debug(f"User {user_id} successfully deleted")
+            return True
+        except ValueError as e:
+            logger.error(f"Error deleting user: {e}")
+            return False
+
+    # (optionnel) Promotion admin — à appeler uniquement depuis une route admin
+    def promote_user_to_admin(self, user_id: int):
+        user = self.user_repo.get_by_id(user_id)
+        if not user:
+            return None
+        user.is_admin = True
+        db.session.commit()
+        return user
+
+    # ----------------------------------------------------------------------
+    # AMENITIES
+    # ----------------------------------------------------------------------
+
     def create_amenity(self, amenity_data):
         """Create a new amenity"""
-        if len(amenity_data['name']) > 50:
+        if len(amenity_data.get('name', '')) > 50:
             raise ValueError("Amenity name must be 50 characters or less")
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
@@ -94,12 +162,16 @@ class HBnBFacade:
             return amenity
         return None
 
+    # ----------------------------------------------------------------------
+    # PLACES
+    # ----------------------------------------------------------------------
+
     def create_place(self, place_data):
         logger.debug(f"Attempting to create place with data: {place_data}")
 
-        # Extract owner_id and amenities from place_data
-        owner_id = place_data.pop('owner_id', None)
-        amenities_ids = place_data.pop('amenities', [])
+        data = dict(place_data or {})
+        owner_id = data.pop('owner_id', None)
+        amenities_ids = data.pop('amenities', [])
 
         if not owner_id:
             raise ValueError("owner_id is required")
@@ -109,13 +181,8 @@ class HBnBFacade:
             raise ValueError(f"User with id {owner_id} not found")
 
         try:
-            # Create place with core data
-            place = Place(
-                **place_data,
-                owner=owner
-            )
+            place = Place(**data, owner=owner)
 
-            # Add amenities after place creation
             for amenity_id in amenities_ids:
                 amenity = self.amenity_repo.get(amenity_id)
                 if amenity:
@@ -125,7 +192,6 @@ class HBnBFacade:
 
             self.place_repo.add(place)
             logger.debug(f"Place added to repository with owner {owner.id}")
-
             return place
 
         except Exception as e:
@@ -144,62 +210,68 @@ class HBnBFacade:
             return None
 
         try:
-            # Validate core attributes if they're being updated
-            if 'title' in place_data:
-                if len(place_data['title']) > 100:
+            data = dict(place_data or {})
+
+            if 'title' in data:
+                if len(data['title']) > 100:
                     raise ValueError("Title must be 100 characters or less")
-                place.title = place_data['title']
+                place.title = data['title']
 
-            if 'description' in place_data:
-                place.description = place_data['description']
+            if 'description' in data:
+                place.description = data['description']
 
-            if 'price' in place_data:
-                if place_data['price'] < 0:
+            if 'price' in data:
+                if float(data['price']) < 0:
                     raise ValueError("Price must be a non-negative number")
-                place.price = float(place_data['price'])
+                place.price = float(data['price'])
 
-            if 'latitude' in place_data:
-                if not (-90 <= place_data['latitude'] <= 90):
+            if 'latitude' in data:
+                if not (-90 <= float(data['latitude']) <= 90):
                     raise ValueError("Latitude must be between -90 and 90")
-                place.latitude = float(place_data['latitude'])
+                place.latitude = float(data['latitude'])
 
-            if 'longitude' in place_data:
-                if not (-180 <= place_data['longitude'] <= 180):
+            if 'longitude' in data:
+                if not (-180 <= float(data['longitude']) <= 180):
                     raise ValueError("Longitude must be between -180 and 180")
-                place.longitude = float(place_data['longitude'])
+                place.longitude = float(data['longitude'])
 
-            if 'owner_id' in place_data:
-                owner = self.user_repo.get(place_data['owner_id'])
+            if 'owner_id' in data:
+                owner = self.user_repo.get_by_id(data['owner_id'])  # ✅ fix: get_by_id
                 if owner:
                     place.owner = owner
                 else:
-                    raise ValueError(f"User with id {place_data['owner_id']} not found")
+                    raise ValueError(f"User with id {data['owner_id']} not found")
 
-            if 'amenities' in place_data:
-                place.amenities = []  # Reset amenities
-                for amenity_id in place_data['amenities']:
+            if 'amenities' in data:
+                place.amenities = []  # reset
+                for amenity_id in data['amenities']:
                     amenity = self.amenity_repo.get(amenity_id)
                     if amenity:
                         place.add_amenity(amenity)
 
             logger.debug(f"Successfully updated place {place_id}")
+            db.session.commit()
             return place
 
         except Exception as e:
             logger.error(f"Error updating place: {str(e)}")
             raise ValueError(str(e))
 
+    # ----------------------------------------------------------------------
+    # REVIEWS
+    # ----------------------------------------------------------------------
+
     def create_review(self, review_data):
-        if not (1 <= review_data['rating'] <= 5):
+        if not (1 <= review_data.get('rating', 0) <= 5):
             raise ValueError("Rating must be between 1 and 5")
-        user = self.get_user(review_data['user_id'])
+        user = self.get_user(review_data.get('user_id'))
         if not user:
             raise ValueError("User not found")
-        place = self.get_place(review_data['place_id'])
+        place = self.get_place(review_data.get('place_id'))
         if not place:
             raise ValueError("Place not found")
         review = Review(
-            text=review_data['text'],
+            text=review_data.get('text', ''),
             rating=review_data['rating'],
             place=place,
             user=user
@@ -217,7 +289,7 @@ class HBnBFacade:
         place = self.get_place(place_id)
         if not place:
             raise ValueError("Place not found")
-        return [review for review in self.review_repo.get_all() if review.place.id == place_id]
+        return [r for r in self.review_repo.get_all() if r.place.id == place_id]
 
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
@@ -234,9 +306,3 @@ class HBnBFacade:
             self.review_repo.delete(review_id)
             return True
         return False
-
-    def is_valid_email(self, email):
-        """Validate email format"""
-        import re
-        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        return re.match(email_regex, email) is not None

@@ -26,7 +26,8 @@ class UserRepository:
                 password=password,
                 is_admin=is_admin,
             )
-            user.hash_password(password)  # Hashage du mot de passe
+            # Le mot de passe est déjà hashé automatiquement dans User.__init__()
+            # Pas besoin d'appeler set_password() ici
             db.session.add(user)
             db.session.commit()
             return user
@@ -39,6 +40,10 @@ class UserRepository:
         user = self.get_by_id(user_id)
         if not user:
             raise ValueError("Utilisateur introuvable.")
+        
+        # Si le mot de passe doit être mis à jour, utiliser set_password()
+        if 'password' in data:
+            user.set_password(data.pop('password'))
         
         for key, value in data.items():
             if hasattr(user, key) and key != "id":
