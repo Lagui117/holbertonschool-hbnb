@@ -1,6 +1,6 @@
 # app/models/base_model.py
 from datetime import datetime
-from app import db
+from app.extensions import db
 from sqlalchemy import Column, DateTime
 
 class BaseModel(db.Model):

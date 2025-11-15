@@ -1,7 +1,7 @@
 # app/persistence/review_repository.py
 
 from app.models.review import Review
-from app import db
+from app.extensions import db
 from sqlalchemy.exc import IntegrityError
 
 class ReviewRepository:

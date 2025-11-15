@@ -1,5 +1,5 @@
 from app.models.user import User
-from app import db
+from app.extensions import db
 from sqlalchemy.exc import IntegrityError
 
 class UserRepository:
@@ -15,6 +15,10 @@ class UserRepository:
     def get_by_email(self, email):
         """Récupère un utilisateur par son email."""
         return db.session.query(self.model).filter_by(email=email).first()
+
+    def get_all(self):
+        """Récupère tous les utilisateurs."""
+        return db.session.query(self.model).all()
 
     def create(self, first_name, last_name, email, password, is_admin=False):
         """Crée un nouvel utilisateur."""

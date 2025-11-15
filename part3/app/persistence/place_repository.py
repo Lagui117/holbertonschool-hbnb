@@ -1,7 +1,7 @@
 # app/persistence/place_repository.py
 
 from app.models.place import Place
-from app import db
+from app.extensions import db
 from sqlalchemy.exc import IntegrityError
 
 class PlaceRepository:

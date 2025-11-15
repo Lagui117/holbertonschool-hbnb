@@ -531,6 +531,29 @@ coverage report
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)
 - [Documentation Mermaid.js](https://mermaid.js.org/)
 
+### ✅ Statut des Tâches
+
+| Task | Description | Statut |
+|------|-------------|--------|
+| 0 | Application Factory avec Configuration | ✅ Complété |
+| 1 | Hachage de Mot de Passe (User Model) | ✅ Complété |
+| 2 | Authentification JWT | ✅ Complété |
+| 3 | Endpoints Utilisateurs Authentifiés | ✅ Complété |
+| 4 | Endpoints Administrateur | ✅ Complété |
+| 5 | SQLAlchemy Repository | ✅ Complété |
+| 6 | Mapping Entité User | ✅ Complété |
+| 7 | Mapping Entités Place, Review, Amenity | ✅ Complété |
+| 8 | Relations SQLAlchemy | ✅ Complété |
+| 9 | Scripts SQL | ✅ Complété |
+| 10 | Diagrammes ER | ✅ Complété |
+
+### 📝 Fichiers Importants
+
+- `API_TESTING.md` - Guide complet de test de l'API avec exemples curl
+- `ER_diag.md` - Diagramme Entity-Relationship avec Mermaid.js
+- `setup.sql` - Script SQL pour création manuelle de la base
+- `create_first_admin.py` - Script d'initialisation du premier admin
+
 ### 👥 Contributeurs
 
 - **Yassin Jaghmim**

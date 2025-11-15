@@ -1,9 +1,14 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services.facade import HBnBFacade
 
 api = Namespace('reviews', description='Review operations')
 facade = HBnBFacade()
+
+# Helper function to check admin privileges
+def is_admin_user():
+    claims = get_jwt()
+    return claims.get('is_admin', False)
 
 # Define the review model for input validation and documentation
 review_model = api.model('Review', {
@@ -96,8 +101,8 @@ class ReviewResource(Resource):
             if not review:
                 return {'error': "Review not found"}, 404
 
-            # Check if the current user is the creator of the review
-            if str(review.user.id) != current_user:
+            # Check if the current user is the creator of the review OR is admin
+            if str(review.user.id) != current_user and not is_admin_user():
                 return {'error': "Unauthorized action"}, 403
 
             update_data = api.payload
@@ -128,8 +133,8 @@ class ReviewResource(Resource):
             if not review:
                 return {'error': "Review not found"}, 404
 
-            # Check if the current user is the creator of the review
-            if str(review.user.id) != current_user:
+            # Check if the current user is the creator of the review OR is admin
+            if str(review.user.id) != current_user and not is_admin_user():
                 return {'error': "Unauthorized action"}, 403
 
             # Delete the review using the facade

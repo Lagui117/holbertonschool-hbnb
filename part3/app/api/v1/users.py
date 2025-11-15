@@ -397,3 +397,77 @@ class UserResource(Resource):
         return {
             'message': 'User deleted successfully'
         }, 200
+
+
+# ==================== ROUTES ADMIN - Modification complète utilisateur ====================
+
+# Modèle admin pour modification complète (email, password, is_admin)
+admin_user_update_model = api.model('AdminUserUpdate', {
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user'),
+    'email': fields.String(description='Email of the user'),
+    'password': fields.String(description='New password'),
+    'is_admin': fields.Boolean(description='Admin privileges')
+})
+
+
+@api.route('/<user_id>/admin-update')
+class AdminUserUpdate(Resource):
+    """
+    Endpoint ADMIN ONLY pour modification complète d'un utilisateur
+    Admin-only endpoint for full user modification
+    """
+    
+    @api.doc('admin_update_user', security='Bearer')
+    @jwt_required()
+    @api.expect(admin_user_update_model)
+    @api.response(200, 'User updated successfully by admin')
+    @api.response(404, 'User not found')
+    @api.response(403, 'Admin access required')
+    @api.response(400, 'Invalid input data or email already exists')
+    def put(self, user_id):
+        """
+        Update user (admin only - can modify email, password, is_admin)
+        Modifier un utilisateur (admin uniquement - peut modifier email, password, is_admin)
+        
+        Authentification requise : OUI (JWT Bearer token + Admin)
+        Authentication required: YES (JWT Bearer token + Admin)
+        
+        Restrictions:
+            - ADMIN UNIQUEMENT / ADMIN ONLY
+            - Peut modifier tous les champs incluant email, password et is_admin
+            - Can modify all fields including email, password and is_admin
+        """
+        # ✅ VÉRIFICATION ADMIN
+        if not is_admin_user():
+            return {'error': 'Admin access required'}, 403
+        
+        # Récupération de l'utilisateur
+        user = facade.get_user(user_id)
+        if not user:
+            return {'error': 'User not found'}, 404
+        
+        # Récupération des données de mise à jour
+        update_data = api.payload or {}
+        
+        try:
+            # Vérifier si l'email change et s'il n'existe pas déjà
+            if 'email' in update_data and update_data['email'] != user.email:
+                existing = facade.get_user_by_email(update_data['email'])
+                if existing:
+                    return {'error': 'Email already in use'}, 400
+            
+            # Mise à jour via le user_repo directement pour avoir plus de contrôle
+            updated_user = facade.user_repo.update(user_id, update_data)
+            
+            return {
+                'id': updated_user.id,
+                'first_name': updated_user.first_name,
+                'last_name': updated_user.last_name,
+                'email': updated_user.email,
+                'is_admin': updated_user.is_admin,
+                'message': 'User updated successfully by admin'
+            }, 200
+            
+        except ValueError as e:
+            return {'error': str(e)}, 400

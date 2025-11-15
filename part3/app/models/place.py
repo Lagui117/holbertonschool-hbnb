@@ -6,7 +6,7 @@ Ce module définit le modèle Place avec ses relations et validations
 This module defines the Place model with its relationships and validations
 """
 
-from app import db
+from app.extensions import db
 from .base_model import BaseModel
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship

@@ -40,6 +40,7 @@ erDiagram
         int user_id FK
         datetime created_at
         datetime updated_at
+        unique(user_id, place_id) UK
     }
 
     AMENITY {

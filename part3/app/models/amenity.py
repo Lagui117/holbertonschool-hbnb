@@ -1,6 +1,6 @@
 # app/models/amenity.py
 
-from app import db
+from app.extensions import db
 from .base_model import BaseModel
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship

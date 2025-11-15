@@ -1,7 +1,7 @@
 # app/persistence/amenity_repository.py
 
 from app.models.amenity import Amenity
-from app import db
+from app.extensions import db
 from sqlalchemy.exc import IntegrityError
 
 class AmenityRepository:

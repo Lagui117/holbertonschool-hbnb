@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 from .base_model import BaseModel
 from .place import Place
 from .user import User

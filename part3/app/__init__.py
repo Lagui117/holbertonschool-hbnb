@@ -17,9 +17,6 @@ def create_app(config_class=DevelopmentConfig):
     # Load the configuration
     app.config.from_object(config_class)
 
-    # Secret key for JWT
-    app.config['JWT_SECRET_KEY'] = 'your-secret-key'
-    
     # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)

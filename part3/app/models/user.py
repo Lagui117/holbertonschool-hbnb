@@ -1,5 +1,5 @@
 # app/models/user.py
-from app import db, bcrypt
+from app.extensions import db, bcrypt
 from app.models.base_model import BaseModel
 import re
 from sqlalchemy import Column, Integer, String, Boolean

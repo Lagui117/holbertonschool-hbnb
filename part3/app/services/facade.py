@@ -1,6 +1,6 @@
 # app/service/facade.py
 import logging
-from app import db
+from app.extensions import db
 from app.persistence.user_repository import UserRepository
 from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
@@ -36,8 +36,8 @@ class HBnBFacade:
 
     def create_user(self, user_data: dict):
         """
-        Crée un utilisateur "user" standard.
-        - Ignore toute tentative d'injecter is_admin depuis le client.
+        Crée un utilisateur (user standard ou admin selon is_admin).
+        - Le flag is_admin doit être validé au niveau de l'endpoint (api/v1/users.py).
         - Le modèle User hash déjà le password en __init__ si on passe un mot de passe en clair.
         """
         logger.debug(f"Creating user with data: {user_data}")
@@ -45,17 +45,16 @@ class HBnBFacade:
         # Champs autorisés à la création
         safe = {
             k: v for k, v in (user_data or {}).items()
-            if k in {'first_name', 'last_name', 'email', 'password'}
+            if k in {'first_name', 'last_name', 'email', 'password', 'is_admin'}
         }
 
-        # Défense en profondeur : forcer is_admin à False côté serveur
-        safe.pop('is_admin', None)
+        # Par défaut, is_admin = False si non spécifié
+        if 'is_admin' not in safe:
+            safe['is_admin'] = False
 
         try:
-            user = self.user_repo.create(**safe)  # => User.__init__ fera le hash si password en clair
-            user.is_admin = False
-            db.session.commit()
-            logger.debug(f"User created with ID: {user.id}")
+            user = self.user_repo.create(**safe)
+            logger.debug(f"User created with ID: {user.id}, is_admin: {user.is_admin}")
             return user
         except ValueError as e:
             logger.error(f"Error creating user: {e}")
@@ -257,6 +256,16 @@ class HBnBFacade:
             logger.error(f"Error updating place: {str(e)}")
             raise ValueError(str(e))
 
+    def delete_place(self, place_id):
+        """Supprime un place par son ID."""
+        logger.debug(f"Attempting to delete place with ID: {place_id}")
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+        self.place_repo.delete(place_id)
+        logger.debug(f"Place {place_id} successfully deleted")
+        return True
+
     # ----------------------------------------------------------------------
     # REVIEWS
     # ----------------------------------------------------------------------
@@ -305,4 +314,12 @@ class HBnBFacade:
         if review:
             self.review_repo.delete(review_id)
             return True
+        return False
+
+    def has_already_reviewed(self, user_id, place_id):
+        """Vérifie si un utilisateur a déjà commenté un lieu donné."""
+        reviews = self.review_repo.get_all()
+        for review in reviews:
+            if str(review.user.id) == str(user_id) and str(review.place.id) == str(place_id):
+                return True
         return False
