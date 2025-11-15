@@ -365,8 +365,8 @@ class UserResource(Resource):
         Restrictions:
             - Les utilisateurs peuvent supprimer leur propre compte
             - Users can delete their own account
-            - Les admins peuvent supprimer n'importe quel compte
-            - Admins can delete any account
+            - SEULS les admins peuvent supprimer d'autres comptes
+            - ONLY admins can delete other accounts
         
         Args:
             user_id (int): ID de l'utilisateur / User ID

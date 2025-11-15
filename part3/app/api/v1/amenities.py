@@ -21,12 +21,8 @@ class AmenityList(Resource):
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
-    @api.response(403, 'Admin privileges required')
     def post(self):
-        """Register a new amenity (Admin only)"""
-        if not is_admin_user():
-            return {'error': 'Admin privileges required'}, 403
-
+        """Register a new amenity (All authenticated users)"""
         amenity_data = api.payload
         try:
             new_amenity = facade.create_amenity(amenity_data)
@@ -71,3 +67,19 @@ class AmenityResource(Resource):
             return {'id': updated_amenity.id, 'name': updated_amenity.name}, 200
         except ValueError as e:
             return {'error': str(e)}, 400
+
+    @jwt_required()
+    @api.response(200, 'Amenity deleted successfully')
+    @api.response(404, 'Amenity not found')
+    @api.response(403, 'Admin privileges required')
+    def delete(self, amenity_id):
+        """Delete an amenity (Admin only)"""
+        if not is_admin_user():
+            return {'error': 'Admin privileges required'}, 403
+
+        amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            return {'error': 'Amenity not found'}, 404
+
+        facade.delete_amenity(amenity_id)
+        return {'message': 'Amenity deleted successfully'}, 200

@@ -161,6 +161,14 @@ class HBnBFacade:
             return amenity
         return None
 
+    def delete_amenity(self, amenity_id):
+        """Delete an amenity"""
+        amenity = self.get_amenity(amenity_id)
+        if amenity:
+            self.amenity_repo.delete(amenity_id)
+            return True
+        return False
+
     # ----------------------------------------------------------------------
     # PLACES
     # ----------------------------------------------------------------------

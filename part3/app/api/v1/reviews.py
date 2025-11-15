@@ -123,9 +123,9 @@ class ReviewResource(Resource):
     @jwt_required()  # Require authentication to delete a review
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
-    @api.response(403, "Unauthorized action")
+    @api.response(403, "Unauthorized action - You are not the review author or admin")
     def delete(self, review_id):
-        """Delete a review"""
+        """Delete a review (Owner or Admin)"""
         current_user = get_jwt_identity()  # Get the authenticated user's identity (user ID)
         try:
             # Retrieve the existing review

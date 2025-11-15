@@ -323,10 +323,10 @@ class PlaceResource(Resource):
     # ==================== DELETE - Supprimer un place ====================
     
     @api.doc('delete_place', security='Bearer')  # ✅ Affiche le cadenas 🔒
-    @jwt_required()  # ✅ Authentification JWT requise
+    @jwt_required()  # ✅ JWT requis
     @api.response(200, "Place deleted successfully")
     @api.response(404, "Place not found")
-    @api.response(403, "Unauthorized action - You are not the owner")
+    @api.response(403, "Unauthorized action - You are not the owner or admin")
     @api.response(401, 'Unauthorized - Missing or invalid JWT token')
     def delete(self, place_id):
         """
