@@ -1,6 +1,6 @@
 # Sequence Diagrams for API Calls (Task 2)
 
-## 📑 Table des matières / Table of Contents
+##  Table des matières / Table of Contents
 
 1. [User Registration – Inscription utilisateur](#1-user-registration)
 2. [Place Creation – Création de lieu](#2-place-creation)
@@ -9,7 +9,7 @@
 
 ---
 
-## 1️⃣ User Registration – Inscription utilisateur
+## 1⃣ User Registration – Inscription utilisateur
 
 ```mermaid
 sequenceDiagram
@@ -57,12 +57,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **FR :** Vérifie l'unicité de l'email, hache le mot de passe avant stockage.  
-🗝️ **EN :** Checks unique email, hashes password before saving.
+ **FR :** Vérifie l'unicité de l'email, hache le mot de passe avant stockage.  
+ **EN :** Checks unique email, hashes password before saving.
 
 ---
 
-## 2️⃣ Place Creation – Création de lieu
+## 2⃣ Place Creation – Création de lieu
 
 ```mermaid
 sequenceDiagram
@@ -106,12 +106,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **FR :** JWT requis, coordonnées valides, prix ≥ 0.  
-🗝️ **EN :** JWT required, valid coordinates, price ≥ 0.
+ **FR :** JWT requis, coordonnées valides, prix ≥ 0.  
+ **EN :** JWT required, valid coordinates, price ≥ 0.
 
 ---
 
-## 3️⃣ Review Submission – Soumission d'avis
+## 3⃣ Review Submission – Soumission d'avis
 
 ```mermaid
 sequenceDiagram
@@ -161,12 +161,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **FR :** Un utilisateur ne peut pas noter son propre lieu, un seul avis par lieu.  
-🗝️ **EN :** User cannot review their own place, one review per place only.
+ **FR :** Un utilisateur ne peut pas noter son propre lieu, un seul avis par lieu.  
+ **EN :** User cannot review their own place, one review per place only.
 
 ---
 
-## 4️⃣ Fetch Places List – Récupération de la liste des lieux
+## 4⃣ Fetch Places List – Récupération de la liste des lieux
 
 ```mermaid
 sequenceDiagram
@@ -206,12 +206,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **FR :** Supporte la pagination, les filtres et le comptage total.  
-🗝️ **EN :** Supports pagination, filters, and total count.
+ **FR :** Supporte la pagination, les filtres et le comptage total.  
+ **EN :** Supports pagination, filters, and total count.
 
 ---
 
-## 🌐 HTTP Codes – Codes de réponse
+##  HTTP Codes – Codes de réponse
 
 | Code | Signification (FR) | Meaning (EN) |
 |------|-------------------|--------------|
@@ -226,7 +226,7 @@ sequenceDiagram
 
 ---
 
-## 🔑 Concepts clés / Key Concepts
+##  Concepts clés / Key Concepts
 
 | Concept | FR | EN |
 |---------|----|----|
@@ -237,10 +237,10 @@ sequenceDiagram
 
 ---
 
-## 🎯 Flux général / Global flow
+##  Flux général / Global flow
 
 ```
-Client → API → Auth (si requis) → Facade → Service → Repository → Database → (retour)
+Client  API  Auth (si requis)  Facade  Service  Repository  Database  (retour)
 ```
 
 **FR :** Requête descend dans les couches, réponse remonte dans l'ordre inverse.  

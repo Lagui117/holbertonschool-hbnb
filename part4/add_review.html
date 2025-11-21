@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review - HBnB</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="review-form-wrapper">
+                <h1>Add Your Review</h1>
+                <p class="subtitle" id="place-name-subtitle">Share your experience</p>
+
+                <form id="review-form" class="review-form">
+                    <div class="form-group">
+                        <label for="review-text">Your Review</label>
+                        <textarea 
+                            id="review-text" 
+                            name="review-text" 
+                            rows="6"
+                            placeholder="Share your thoughts about this place..."
+                            required
+                            minlength="10"
+                        ></textarea>
+                        <small>Minimum 10 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review-rating">Rating</label>
+                        <select id="review-rating" name="review-rating" required>
+                            <option value="">Select a rating</option>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select>
+                    </div>
+
+                    <div id="error-message" class="error-message" style="display: none;"></div>
+                    <div id="success-message" class="success-message" style="display: none;"></div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Submit Review</button>
+                        <button type="button" id="cancel-button" class="cancel-button">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 HBnB. All rights reserved.</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

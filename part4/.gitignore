@@ -1,0 +1,19 @@
+# HBnB Part 4 - GitIgnore
+
+# Logs
+*.log
+/tmp/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# PID Files
+*.pid

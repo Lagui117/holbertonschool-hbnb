@@ -2,17 +2,17 @@ import unittest
 from app.models.amenity import Amenity
 
 class TestAmenity(unittest.TestCase):
-    def test_valid_amenity(self):
-        amenity = Amenity(name="Wi-Fi")
-        self.assertEqual(amenity.name, "Wi-Fi")
+ #ef test_valid_amenity(self):
+ #menity = Amenity(name="Wi-Fi")
+ #elf.assertEqual(amenity.name, "Wi-Fi")
 
-    def test_invalid_name(self):
-        with self.assertRaises(ValueError):
-            Amenity(name="")
+ #ef test_invalid_name(self):
+ #ith self.assertRaises(ValueError):
+ #menity(name="")
 
-    def test_name_too_long(self):
-        with self.assertRaises(ValueError):
-            Amenity(name="A" * 51)
+ #ef test_name_too_long(self):
+ #ith self.assertRaises(ValueError):
+ #menity(name="A" * 51)
 
 if __name__ == '__main__':
-    unittest.main()
+ #nittest.main()

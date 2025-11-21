@@ -1,39 +1,39 @@
-# 🏠 HBNB - Holberton BnB
+#  HBNB - Holberton BnB
 
-## 🎯 Project Overview
+##  Project Overview
 RESTful API for a Bed and Breakfast service built with Flask, implementing clean architecture patterns.
 
-## 📁 Project Structure
+##  Project Structure
 ```bash
 part2/
-├── app/
-│   ├── api/v1/          # API endpoints
-│   │   ├── users.py
-│   │   ├── places.py
-│   │   ├── reviews.py
-│   │   └── amenities.py
-│   ├── models/          # Business logic
-│   │   ├── base_model.py
-│   │   ├── user.py
-│   │   ├── place.py
-│   │   ├── review.py
-│   │   └── amenity.py
-│   ├── services/        # Facade pattern
-│   └── persistence/     # Repository pattern
-├── run.py              
-└── requirements.txt    
+ app/
+    api/v1/          # API endpoints
+       users.py
+       places.py
+       reviews.py
+       amenities.py
+    models/          # Business logic
+       base_model.py
+       user.py
+       place.py
+       review.py
+       amenity.py
+    services/        # Facade pattern
+    persistence/     # Repository pattern
+ run.py              
+ requirements.txt    
 ```
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 🧩 Core Components
+##  Core Components
 
-### 1. 🔷 Base Model
+### 1.  Base Model
 ```python
 class BaseModel:
     def __init__(self):
@@ -42,7 +42,7 @@ class BaseModel:
         self.updated_at = datetime.now()
 ```
 
-### 2. 📦 Core Models
+### 2.  Core Models
 - **User**
   - Attributes: first_name, last_name, email, is_admin
   - Validation: names ≤ 50 chars, unique email
@@ -60,7 +60,7 @@ class BaseModel:
   - Attributes: name (≤ 50 chars)
   - Relationships: many-to-many with Place
 
-### 3. 🎭 Facade Pattern
+### 3.  Facade Pattern
 ```python
 class HBnBFacade:
     def __init__(self):
@@ -83,9 +83,9 @@ class HBnBFacade:
         return place
 ```
 
-## 🔌 API Endpoints & Examples
+##  API Endpoints & Examples
 
-### 👥 User Management
+###  User Management
 ```bash
 # Create User
 POST /api/v1/users/
@@ -104,7 +104,7 @@ POST /api/v1/users/
 }
 ```
 
-### 🏡 Place Management
+###  Place Management
 ```bash
 # Create Place
 POST /api/v1/places/
@@ -123,7 +123,7 @@ GET /api/v1/places/<place_id>
 Response includes: owner details, amenities, reviews
 ```
 
-### ⭐ Review Management
+###  Review Management
 ```bash
 # Create Review
 POST /api/v1/reviews/
@@ -138,7 +138,7 @@ POST /api/v1/reviews/
 GET /api/v1/places/<place_id>/reviews
 ```
 
-### 🛋️ Amenity Management
+###  Amenity Management
 ```bash
 # Create Amenity
 POST /api/v1/amenities/
@@ -150,13 +150,13 @@ POST /api/v1/amenities/
 GET /api/v1/amenities/
 ```
 
-## 📊 Status Codes & Responses
+##  Status Codes & Responses
 - 201: Resource Created
 - 200: Success
 - 404: Not Found
 - 400: Bad Request
 
-### 📝 Common Response Format
+###  Common Response Format
 ```json
 {
     "id": "uuid",
@@ -166,9 +166,9 @@ GET /api/v1/amenities/
 }
 ```
 
-## 🏃‍♂️ Running the Application
+## ‍ Running the Application
 ```bash
 python run.py  # Server starts at http://127.0.0.1:5000
 
 ---
-## 🌟 **Summary**: This project implements a comprehensive REST API for a BnB platform using Flask, featuring clean architecture with Facade and Repository patterns, managing users, places, reviews, and amenities through a well-structured endpoint system.
+##  **Summary**: This project implements a comprehensive REST API for a BnB platform using Flask, featuring clean architecture with Facade and Repository patterns, managing users, places, reviews, and amenities through a well-structured endpoint system.

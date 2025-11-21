@@ -1,6 +1,6 @@
 # HBnB Evolution - Complete Technical Documentation / Documentation Technique Complète
 
-## 📋 Project Information / Informations du Projet
+##  Project Information / Informations du Projet
 
 **Project / Projet :** HBnB Evolution - Part 1 (UML Design)  
 **Team / Équipe :** Yassin Jaghmim, Guillaume Watelet  
@@ -9,7 +9,7 @@
 
 ---
 
-## 📑 Table of Contents / Table des matières
+##  Table of Contents / Table des matières
 
 1. [Introduction](#introduction)
 2. [General Architecture (Task 0) / Architecture Générale](#task-0-general-architecture--architecture-générale)
@@ -22,13 +22,13 @@
 
 ## Introduction
 
-### 🎯 Project Objective / Objectif du Projet
+###  Project Objective / Objectif du Projet
 
 **EN:** HBnB Evolution is a simplified AirBnB-like application. This first part (Part 1) focuses on the **design and technical documentation** of the system architecture, without code implementation.
 
 **FR:** HBnB Evolution est une application de type AirBnB simplifiée. Cette première partie (Part 1) se concentre sur la **conception et la documentation technique** de l'architecture du système, sans implémentation de code.
 
-### 📦 Deliverables / Livrables
+###  Deliverables / Livrables
 
 **EN:** This documentation includes:
 - **Package diagram** (layered architecture)
@@ -42,7 +42,7 @@
 - **4 diagrammes de séquence** (flux API)
 - **Règles métier et contraintes**
 
-### 🏗️ Architecture / Architecture Choisie
+###  Architecture / Architecture Choisie
 
 **Architectural Pattern / Pattern Architectural :** Layered Architecture / Architecture en couches  
 **Design Pattern / Pattern de Conception :** Facade for inter-layer communication / Facade pour la communication entre couches
@@ -111,17 +111,17 @@ graph TB
     class UserRepo,PlaceRepo,ReviewRepo,AmenityRepo,Database persistenceLayer
 ```
 
-### 🔄 Communication Flow / Flux de Communication
+###  Communication Flow / Flux de Communication
 
 ```
-Client → API → Facade → Service → Repository → Database → (back)
-Client → API → Facade → Service → Repository → Database → (retour)
+Client  API  Facade  Service  Repository  Database  (back)
+Client  API  Facade  Service  Repository  Database  (retour)
 ```
 
 **EN:** Request flows downward through layers, response flows back upward.  
 **FR:** Requête descend dans les couches, réponse remonte dans l'ordre inverse.
 
-### 🧩 Layer Responsibilities / Rôle des Couches
+###  Layer Responsibilities / Rôle des Couches
 
 | Layer / Couche | Responsibility (EN) | Responsabilité (FR) |
 |----------------|---------------------|---------------------|
@@ -129,17 +129,17 @@ Client → API → Facade → Service → Repository → Database → (retour)
 | **Business Logic** | Enforces business rules, orchestration, validation | Application des règles métier, orchestration, validation |
 | **Persistence** | Data access, transactions, database communication | Accès aux données, transactions, communication base de données |
 
-### ⚡ Facade Pattern
+###  Facade Pattern
 
 **EN:** The Facade acts as a **single entry point** to business logic. It simplifies interactions between presentation and business services, reduces coupling, and standardizes error handling.
 
 **FR:** Le Facade sert de **point d'entrée unique** vers la logique métier. Il simplifie les interactions entre la couche de présentation et les services métier, réduit le couplage et standardise la gestion des erreurs.
 
 **Benefits / Avantages :**
-- ✅ Reduces coupling between layers / Réduit le couplage entre couches
-- ✅ Centralizes orchestration / Centralise l'orchestration
-- ✅ Facilitates unit testing / Facilite les tests unitaires
-- ✅ Standardizes error handling / Standardise la gestion des erreurs
+-  Reduces coupling between layers / Réduit le couplage entre couches
+-  Centralizes orchestration / Centralise l'orchestration
+-  Facilitates unit testing / Facilite les tests unitaires
+-  Standardizes error handling / Standardise la gestion des erreurs
 
 ---
 
@@ -254,9 +254,9 @@ classDiagram
     ReviewService ..> Place : validates_place
 ```
 
-### 📋 Domain Entities / Entités du Domaine
+###  Domain Entities / Entités du Domaine
 
-#### 👥 User / Utilisateur
+####  User / Utilisateur
 
 **EN:**
 - Represents a registered user in the system
@@ -274,7 +274,7 @@ classDiagram
 - `isAdmin`: Booléen pour privilèges élevés
 - `createdAt/updatedAt`: Timestamps automatiques pour l'audit
 
-#### 🏠 Place / Lieu
+####  Place / Lieu
 
 **EN:**
 - Represents a place listed by a user
@@ -290,7 +290,7 @@ classDiagram
 - `longitude`: Doit être dans [-180, 180]
 - Méthodes pour valider coordonnées et calculer distances
 
-#### ⭐ Review / Avis
+####  Review / Avis
 
 **EN:**
 - Represents a review left by a user on a place
@@ -306,7 +306,7 @@ classDiagram
   - Utilisateur ne peut pas noter son propre lieu
   - Un avis par utilisateur par lieu
 
-#### 🛠️ Amenity / Commodité
+####  Amenity / Commodité
 
 **EN:**
 - Represents an amenity or service (WiFi, pool, parking)
@@ -318,20 +318,20 @@ classDiagram
 - Relation plusieurs-à-plusieurs avec Place
 - Noms doivent être uniques et normalisés
 
-### 🔗 Relationships / Relations
+###  Relationships / Relations
 
 | Relation | Cardinality / Cardinalité | Description (EN) | Description (FR) |
 |----------|---------------------------|------------------|------------------|
-| **User → Place** | `1 : 0..*` | One user owns zero or more places | Un utilisateur possède zéro ou plusieurs lieux |
-| **User → Review** | `1 : 0..*` | One user writes zero or more reviews | Un utilisateur écrit zéro ou plusieurs avis |
-| **Place → Review** | `1 : 0..*` | One place has zero or more reviews | Un lieu contient zéro ou plusieurs avis |
-| **Place ↔ Amenity** | `0..* : 0..*` | Many-to-many relationship | Relation plusieurs-à-plusieurs |
+| **User  Place** | `1 : 0..*` | One user owns zero or more places | Un utilisateur possède zéro ou plusieurs lieux |
+| **User  Review** | `1 : 0..*` | One user writes zero or more reviews | Un utilisateur écrit zéro ou plusieurs avis |
+| **Place  Review** | `1 : 0..*` | One place has zero or more reviews | Un lieu contient zéro ou plusieurs avis |
+| **Place  Amenity** | `0..* : 0..*` | Many-to-many relationship | Relation plusieurs-à-plusieurs |
 
 ---
 
 ## Task 2: Sequence Diagrams / Diagrammes de Séquence
 
-### 1️⃣ User Registration / Inscription utilisateur
+### 1⃣ User Registration / Inscription utilisateur
 
 ```mermaid
 sequenceDiagram
@@ -377,12 +377,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **EN:** Checks unique email, hashes password before saving.  
-🗝️ **FR:** Vérifie l'unicité de l'email, hache le mot de passe avant stockage.
+ **EN:** Checks unique email, hashes password before saving.  
+ **FR:** Vérifie l'unicité de l'email, hache le mot de passe avant stockage.
 
 ---
 
-### 2️⃣ Place Creation / Création de lieu
+### 2⃣ Place Creation / Création de lieu
 
 ```mermaid
 sequenceDiagram
@@ -424,12 +424,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **EN:** JWT required, valid coordinates, price ≥ 0.  
-🗝️ **FR:** JWT requis, coordonnées valides, prix ≥ 0.
+ **EN:** JWT required, valid coordinates, price ≥ 0.  
+ **FR:** JWT requis, coordonnées valides, prix ≥ 0.
 
 ---
 
-### 3️⃣ Review Submission / Soumission d'avis
+### 3⃣ Review Submission / Soumission d'avis
 
 ```mermaid
 sequenceDiagram
@@ -477,12 +477,12 @@ sequenceDiagram
     end
 ```
 
-🗝️ **EN:** User cannot review their own place, one review per place only.  
-🗝️ **FR:** Un utilisateur ne peut pas noter son propre lieu, un seul avis par lieu.
+ **EN:** User cannot review their own place, one review per place only.  
+ **FR:** Un utilisateur ne peut pas noter son propre lieu, un seul avis par lieu.
 
 ---
 
-### 4️⃣ Fetch Places List / Récupération de la liste des lieux
+### 4⃣ Fetch Places List / Récupération de la liste des lieux
 
 ```mermaid
 sequenceDiagram
@@ -520,14 +520,14 @@ sequenceDiagram
     end
 ```
 
-🗝️ **EN:** Supports pagination, filters, and total count.  
-🗝️ **FR:** Supporte la pagination, les filtres et le comptage total.
+ **EN:** Supports pagination, filters, and total count.  
+ **FR:** Supporte la pagination, les filtres et le comptage total.
 
 ---
 
 ## Business Rules and Validation / Règles Métier et Validation
 
-### ✅ Global Validation Rules / Règles de Validation Globales
+###  Global Validation Rules / Règles de Validation Globales
 
 | Rule / Règle | EN | FR |
 |--------------|----|----|
@@ -541,7 +541,7 @@ sequenceDiagram
 | **Valid rating** | rating ∈ [1, 5] | rating ∈ [1, 5] |
 | **Password security** | Hashed with bcrypt/argon2 (never plain text) | Hashé avec bcrypt/argon2 (jamais en clair) |
 
-### 🌐 HTTP Status Codes / Codes de Statut HTTP
+###  HTTP Status Codes / Codes de Statut HTTP
 
 | Code | Meaning (EN) | Signification (FR) |
 |------|--------------|-------------------|
@@ -554,7 +554,7 @@ sequenceDiagram
 | **409** | Conflict (duplicate email/review) | Conflit (email/avis dupliqué) |
 | **503** | Service unavailable | Service indisponible |
 
-### 🔑 Key Technical Concepts / Concepts Techniques Clés
+###  Key Technical Concepts / Concepts Techniques Clés
 
 | Concept | EN | FR |
 |---------|----|----|
@@ -569,7 +569,7 @@ sequenceDiagram
 
 ## Conclusion
 
-### 📊 Summary / Résumé
+###  Summary / Résumé
 
 **EN:**  
 This document presents the complete UML design for HBnB Evolution Part 1. The layered architecture with Facade pattern ensures:
@@ -589,13 +589,13 @@ Ce document présente la conception UML complète pour HBnB Evolution Part 1. L'
 
 La conception suit les principes SOLID et les meilleures pratiques de l'industrie, fournissant une base solide pour l'implémentation dans la Part 2.
 
-### 🎯 Next Steps / Prochaines Étapes
+###  Next Steps / Prochaines Étapes
 
 1. **Part 2:** REST API implementation / Implémentation de l'API REST
 2. **Part 3:** Database integration / Intégration de la base de données
 3. **Part 4:** Frontend interface / Interface utilisateur frontend
 
-### 👥 Team / Équipe
+###  Team / Équipe
 
 - **Yassin Jaghmim**
 - **Guillaume Watelet**

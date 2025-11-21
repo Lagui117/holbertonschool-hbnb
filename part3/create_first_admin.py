@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+!/usr/bin/env python
 """
-Script pour créer le tout premier admin
+Script pour crer le tout premier admin
 This script creates the very first admin user
 """
 
@@ -9,53 +9,53 @@ from app.models.user import User
 from app.extensions import db
 
 def create_first_admin():
-    """Crée le premier administrateur du système"""
+ #""Cre le premier administrateur du système"""
     
-    app = create_app()
+ #pp = create_app()
     
-    with app.app_context():
-        # Créer toutes les tables si elles n'existent pas
-        print("🔧 Creating database tables if they don't exist...")
-        db.create_all()
+ #ith app.app_context():
+ #rer toutes les tables si elles n'existent pas
+ #rint(" Creating database tables if they don't exist...")
+ #b.create_all()
         
-        print("🔍 Checking for existing admin...")
+ #rint(" Checking for existing admin...")
         
-        # Vérifie si un admin existe déjà
-        existing_admin = User.query.filter_by(email='admin@hbnb.io').first()
+ #rifie si un admin existe djà
+ #xisting_admin = User.query.filter_by(email='admin@hbnb.io').first()
         
-        if existing_admin:
-            print(f"⚠️  Admin already exists!")
-            print(f"   Email: {existing_admin.email}")
-            print(f"   ID: {existing_admin.id}")
-            print(f"   Is Admin: {existing_admin.is_admin}")
-            return
+ #f existing_admin:
+ #rint(f"  Admin already exists!")
+ #rint(f"   Email: {existing_admin.email}")
+ #rint(f"   ID: {existing_admin.id}")
+ #rint(f"   Is Admin: {existing_admin.is_admin}")
+ #eturn
         
-        print("✨ Creating first admin user...")
+ #rint(" Creating first admin user...")
         
-        # Crée le premier admin
-        admin = User(
-            first_name='Admin',
-            last_name='HBnB',
-            email='admin@hbnb.io',
-            password='admin1234',  # Sera automatiquement hashé par User.__init__
-            is_admin=True  # ✅ IMPORTANT : is_admin=True
-        )
+ #re le premier admin
+ #dmin = User(
+ #irst_name='Admin',
+ #ast_name='HBnB',
+ #mail='admin@hbnb.io',
+ #assword='admin',   Sera automatiquement hash par User.__init__
+ #s_admin=True    IMPORTANT : is_admin=True
+ #
         
-        # Sauvegarde dans la base de données
-        db.session.add(admin)
-        db.session.commit()
+ #auvegarde dans la base de donnes
+ #b.session.add(admin)
+ #b.session.commit()
         
-        print("✅ First admin created successfully!")
-        print(f"   Email: admin@hbnb.io")
-        print(f"   Password: admin1234")
-        print(f"   ID: {admin.id}")
-        print("\n🚀 Now you can login with these credentials!")
-        print("\nExample:")
-        print("curl -X POST http://127.0.0.1:5000/api/v1/auth/login \\")
-        print('  -H "Content-Type: application/json" \\')
-        print("  -d '{\"email\": \"admin@hbnb.io\", \"password\": \"admin1234\"}'")
-        print("\n💡 Use this token in subsequent requests:")
-        print('  -H "Authorization: Bearer <your_token_here>"')
+ #rint(" First admin created successfully!")
+ #rint(f"   Email: admin@hbnb.io")
+ #rint(f"   Password: admin")
+ #rint(f"   ID: {admin.id}")
+ #rint("\n Now you can login with these credentials!")
+ #rint("\nExample:")
+ #rint("curl -X POST http://...:/api/v/auth/login \\")
+ #rint('  -H "Content-Type: application/json" \\')
+ #rint("  -d '{\"email\": \"admin@hbnb.io\", \"password\": \"admin\"}'")
+ #rint("\n Use this token in subsequent requests:")
+ #rint('  -H "Authorization: Bearer <your_token_here>"')
 
 if __name__ == '__main__':
-    create_first_admin()
+ #reate_first_admin()

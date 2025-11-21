@@ -1,6 +1,6 @@
-# 🧪 HBNB API Testing Guide
+#  HBNB API Testing Guide
 
-## 🎯 Core Validations
+##  Core Validations
 
 ### 1. User Model
 - First/Last name: non-empty, ≤ 50 chars
@@ -34,7 +34,7 @@ def test_user_validation():
 - Rating: 1-5
 - Valid user_id and place_id
 
-## 📡 API Testing
+##  API Testing
 
 ### User Endpoints
 ```bash
@@ -86,29 +86,29 @@ curl -X POST "http://localhost:5000/api/v1/users/" \
 curl -X GET "http://localhost:5000/api/v1/places/invalid-id"
 ```
 
-## 🔄 Test Coverage
+##  Test Coverage
 
 ### Essential Test Cases
 1. **Creation Tests**
-   - Valid data → 201
-   - Invalid data → 400
-   - Duplicate data → 400
+   - Valid data  201
+   - Invalid data  400
+   - Duplicate data  400
 
 2. **Retrieval Tests**
-   - Existing resource → 200
-   - Non-existent resource → 404
+   - Existing resource  200
+   - Non-existent resource  404
 
 3. **Update Tests**
-   - Valid update → 200
-   - Invalid data → 400
-   - Non-existent resource → 404
+   - Valid update  200
+   - Invalid data  400
+   - Non-existent resource  404
 
 4. **Relationship Tests**
    - Place with owner details
    - Place with reviews
    - Place with amenities
 
-## 🚀 Running Tests
+##  Running Tests
 ```bash
 # Run all tests
 python -m pytest tests/
@@ -118,8 +118,8 @@ python -m pytest tests/test_users.py
 ```
 
 ---
-> 💡 **Note**: Use the Swagger documentation at `http://localhost:5000/api/v1/` for interactive API testing.
+>  **Note**: Use the Swagger documentation at `http://localhost:5000/api/v1/` for interactive API testing.
 
 ---
-## 🎯 Summary
+##  Summary
 This testing guide provides comprehensive validation rules, API endpoint tests, and coverage scenarios to ensure the HBNB application's reliability and proper functionality across all its components.

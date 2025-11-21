@@ -1,115 +1,115 @@
-# HBnB Part 3 - API Testing Guide
+ HBnB Part  - API Testing Guide
 
-## Démarrage rapide / Quick Start
+ Dmarrage rapide / Quick Start
 
-### 1. Installation
+ . Installation
 
 ```bash
-cd /workspaces/holbertonschool-hbnb/part3
-python3 -m venv hbnbvenv
+cd /workspaces/holbertonschool-hbnb/part
+python -m venv hbnbvenv
 source hbnbvenv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Initialiser la base de données
+ . Initialiser la base de donnes
 
 ```bash
 python create_first_admin.py
 ```
 
-**Admin créé par défaut:**
+Admin cr par dfaut:
 - Email: `admin@hbnb.io`
-- Password: `admin1234`
+- Password: `admin`
 
-### 3. Démarrer le serveur
+ . Dmarrer le serveur
 
 ```bash
 python run.py
 ```
 
-Le serveur démarre sur `http://127.0.0.1:5000/`
+Le serveur dmarre sur `http://...:/`
 
-### 4. Documentation Swagger
+ . Documentation Swagger
 
-Accédez à la documentation interactive Swagger à l'adresse: `http://127.0.0.1:5000/`
+Accdez à la documentation interactive Swagger à l'adresse: `http://...:/`
 
 ---
 
-## Tests des Endpoints
+ Tests des Endpoints
 
-### Authentification
+ Authentification
 
-#### Login (Public)
+ Login (Public)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/auth/login \
+curl -X POST http://...:/api/v/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email": "admin@hbnb.io", "password": "admin1234"}'
+  -d '{"email": "admin@hbnb.io", "password": "admin"}'
 ```
 
-**Réponse:**
+Rponse:
 ```json
 {
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "access_token": "eyJhbGciOiJIUzINiIsInRcCIIkpXVCJ..."
 }
 ```
 
-**Utilisation du token:**
+Utilisation du token:
 ```bash
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:5000/api/v1/...
+TOKEN="eyJhbGciOiJIUzINiIsInRcCIIkpXVCJ..."
+curl -H "Authorization: Bearer $TOKEN" http://...:/api/v/...
 ```
 
 ---
 
-### Gestion des Utilisateurs
+ Gestion des Utilisateurs
 
-#### Créer un utilisateur standard (Public)
+ Crer un utilisateur standard (Public)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+curl -X POST http://...:/api/v/users/ \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "John",
     "last_name": "Doe",
     "email": "john@example.com",
-    "password": "password123"
+    "password": "password"
   }'
 ```
 
-#### Créer un utilisateur admin (Admin uniquement)
+ Crer un utilisateur admin (Admin uniquement)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+curl -X POST http://...:/api/v/users/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -d '{
     "first_name": "Admin",
     "last_name": "User",
     "email": "newadmin@hbnb.io",
-    "password": "admin123",
+    "password": "admin",
     "is_admin": true
   }'
 ```
 
-#### Lister tous les utilisateurs (Admin uniquement)
+ Lister tous les utilisateurs (Admin uniquement)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/users/ \
+curl -X GET http://...:/api/v/users/ \
   -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
-#### Obtenir un utilisateur (Authentifié - Self ou Admin)
+ Obtenir un utilisateur (Authentifi - Self ou Admin)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/users/1 \
+curl -X GET http://...:/api/v/users/ \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Mettre à jour un utilisateur (Authentifié - Self ou Admin)
+ Mettre à jour un utilisateur (Authentifi - Self ou Admin)
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/users/1 \
+curl -X PUT http://...:/api/v/users/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
@@ -118,10 +118,10 @@ curl -X PUT http://127.0.0.1:5000/api/v1/users/1 \
   }'
 ```
 
-#### Modification complète admin (Admin uniquement)
+ Modification complète admin (Admin uniquement)
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/users/1/admin-update \
+curl -X PUT http://...:/api/v/users//admin-update \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -d '{
@@ -131,42 +131,42 @@ curl -X PUT http://127.0.0.1:5000/api/v1/users/1/admin-update \
   }'
 ```
 
-#### Supprimer un utilisateur (Authentifié - Self ou Admin)
+ Supprimer un utilisateur (Authentifi - Self ou Admin)
 
 ```bash
-curl -X DELETE http://127.0.0.1:5000/api/v1/users/1 \
+curl -X DELETE http://...:/api/v/users/ \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-### Gestion des Amenities
+ Gestion des Amenities
 
-#### Créer une amenity (Admin uniquement)
+ Crer une amenity (Admin uniquement)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
+curl -X POST http://...:/api/v/amenities/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -d '{"name": "WiFi"}'
 ```
 
-#### Lister toutes les amenities (Public)
+ Lister toutes les amenities (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/amenities/
+curl -X GET http://...:/api/v/amenities/
 ```
 
-#### Obtenir une amenity (Public)
+ Obtenir une amenity (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/amenities/1
+curl -X GET http://...:/api/v/amenities/
 ```
 
-#### Mettre à jour une amenity (Admin uniquement)
+ Mettre à jour une amenity (Admin uniquement)
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/amenities/1 \
+curl -X PUT http://...:/api/v/amenities/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -d '{"name": "High-Speed WiFi"}'
@@ -174,203 +174,203 @@ curl -X PUT http://127.0.0.1:5000/api/v1/amenities/1 \
 
 ---
 
-### Gestion des Places
+ Gestion des Places
 
-#### Créer un place (Authentifié)
+ Crer un place (Authentifi)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/places/ \
+curl -X POST http://...:/api/v/places/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "title": "Beautiful Beach House",
     "description": "Amazing sea view",
-    "price": 150.0,
-    "latitude": 45.5,
-    "longitude": -73.6,
-    "amenities": [1, 2]
+    "price": .,
+    "latitude": .,
+    "longitude": -.,
+    "amenities": [, ]
   }'
 ```
 
-**Note:** `owner_id` est automatiquement défini à partir du JWT
+Note: `owner_id` est automatiquement dfini à partir du JWT
 
-#### Lister tous les places (Public)
+ Lister tous les places (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/places/
+curl -X GET http://...:/api/v/places/
 ```
 
-#### Obtenir un place (Public)
+ Obtenir un place (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/places/1
+curl -X GET http://...:/api/v/places/
 ```
 
-#### Mettre à jour un place (Owner ou Admin)
+ Mettre à jour un place (Owner ou Admin)
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/places/1 \
+curl -X PUT http://...:/api/v/places/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "title": "Updated Title",
-    "price": 200.0
+    "price": .
   }'
 ```
 
-#### Supprimer un place (Owner ou Admin)
+ Supprimer un place (Owner ou Admin)
 
 ```bash
-curl -X DELETE http://127.0.0.1:5000/api/v1/places/1 \
+curl -X DELETE http://...:/api/v/places/ \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-### Gestion des Reviews
+ Gestion des Reviews
 
-#### Créer un review (Authentifié)
+ Crer un review (Authentifi)
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
+curl -X POST http://...:/api/v/reviews/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "text": "Great place!",
-    "rating": 5,
-    "place_id": "1"
+    "rating": ,
+    "place_id": ""
   }'
 ```
 
-**Restrictions:**
+Restrictions:
 - Impossible de reviewer sa propre place
 - Un utilisateur ne peut reviewer un place qu'une seule fois
 
-#### Lister tous les reviews (Public)
+ Lister tous les reviews (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/reviews/
+curl -X GET http://...:/api/v/reviews/
 ```
 
-#### Obtenir un review (Public)
+ Obtenir un review (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/reviews/1
+curl -X GET http://...:/api/v/reviews/
 ```
 
-#### Lister les reviews d'un place (Public)
+ Lister les reviews d'un place (Public)
 
 ```bash
-curl -X GET http://127.0.0.1:5000/api/v1/reviews/places/1/reviews
+curl -X GET http://...:/api/v/reviews/places//reviews
 ```
 
-#### Mettre à jour un review (Creator ou Admin)
+ Mettre à jour un review (Creator ou Admin)
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/reviews/1 \
+curl -X PUT http://...:/api/v/reviews/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "text": "Updated review",
-    "rating": 4
+    "rating": 
   }'
 ```
 
-#### Supprimer un review (Creator ou Admin)
+ Supprimer un review (Creator ou Admin)
 
 ```bash
-curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/1 \
+curl -X DELETE http://...:/api/v/reviews/ \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-## Matrice des Permissions
+ Matrice des Permissions
 
-| Endpoint | Public | Authentifié | Owner | Admin |
+| Endpoint | Public | Authentifi | Owner | Admin |
 |----------|--------|-------------|-------|-------|
-| **Auth** |
-| POST /auth/login | ✅ | ✅ | ✅ | ✅ |
-| **Users** |
-| POST /users/ (standard) | ✅ | ✅ | ✅ | ✅ |
-| POST /users/ (admin) | ❌ | ❌ | ❌ | ✅ |
-| GET /users/ | ❌ | ❌ | ❌ | ✅ |
-| GET /users/:id | ❌ | ✅ (self) | - | ✅ |
-| PUT /users/:id | ❌ | ✅ (self) | - | ✅ |
-| PUT /users/:id/admin-update | ❌ | ❌ | ❌ | ✅ |
-| DELETE /users/:id | ❌ | ✅ (self) | - | ✅ |
-| **Amenities** |
-| POST /amenities/ | ❌ | ❌ | ❌ | ✅ |
-| GET /amenities/ | ✅ | ✅ | ✅ | ✅ |
-| GET /amenities/:id | ✅ | ✅ | ✅ | ✅ |
-| PUT /amenities/:id | ❌ | ❌ | ❌ | ✅ |
-| **Places** |
-| POST /places/ | ❌ | ✅ | - | ✅ |
-| GET /places/ | ✅ | ✅ | ✅ | ✅ |
-| GET /places/:id | ✅ | ✅ | ✅ | ✅ |
-| PUT /places/:id | ❌ | ❌ | ✅ | ✅ |
-| DELETE /places/:id | ❌ | ❌ | ✅ | ✅ |
-| **Reviews** |
-| POST /reviews/ | ❌ | ✅ | - | ✅ |
-| GET /reviews/ | ✅ | ✅ | ✅ | ✅ |
-| GET /reviews/:id | ✅ | ✅ | ✅ | ✅ |
-| GET /reviews/places/:id/reviews | ✅ | ✅ | ✅ | ✅ |
-| PUT /reviews/:id | ❌ | ✅ (creator) | - | ✅ |
-| DELETE /reviews/:id | ❌ | ✅ (creator) | - | ✅ |
+| Auth |
+| POST /auth/login |  |  |  |  |
+| Users |
+| POST /users/ (standard) |  |  |  |  |
+| POST /users/ (admin) |  |  |  |  |
+| GET /users/ |  |  |  |  |
+| GET /users/:id |  |  (self) | - |  |
+| PUT /users/:id |  |  (self) | - |  |
+| PUT /users/:id/admin-update |  |  |  |  |
+| DELETE /users/:id |  |  (self) | - |  |
+| Amenities |
+| POST /amenities/ |  |  |  |  |
+| GET /amenities/ |  |  |  |  |
+| GET /amenities/:id |  |  |  |  |
+| PUT /amenities/:id |  |  |  |  |
+| Places |
+| POST /places/ |  |  | - |  |
+| GET /places/ |  |  |  |  |
+| GET /places/:id |  |  |  |  |
+| PUT /places/:id |  |  |  |  |
+| DELETE /places/:id |  |  |  |  |
+| Reviews |
+| POST /reviews/ |  |  | - |  |
+| GET /reviews/ |  |  |  |  |
+| GET /reviews/:id |  |  |  |  |
+| GET /reviews/places/:id/reviews |  |  |  |  |
+| PUT /reviews/:id |  |  (creator) | - |  |
+| DELETE /reviews/:id |  |  (creator) | - |  |
 
 ---
 
-## Règles Métier
+ Règles Mtier
 
-### Utilisateurs
-- Mot de passe hashé avec bcrypt
+ Utilisateurs
+- Mot de passe hash avec bcrypt
 - Email unique
-- `is_admin` ne peut être défini que par un admin
+- `is_admin` ne peut être dfini que par un admin
 
-### Places
-- Latitude: -90 à 90
-- Longitude: -180 à 180
-- Prix: >= 0
-- Owner défini automatiquement depuis le JWT
+ Places
+- Latitude: - à 
+- Longitude: - à 
+- Prix: >= 
+- Owner dfini automatiquement depuis le JWT
 
-### Reviews
-- Rating: 1 à 5
+ Reviews
+- Rating:  à 
 - Impossible de reviewer sa propre place
 - Un utilisateur ne peut reviewer un place qu'une fois
 - Contrainte UNIQUE(user_id, place_id) dans la DB
 
-### Amenities
+ Amenities
 - Nom unique
-- Longueur max: 50 caractères
+- Longueur max:  caractères
 
 ---
 
-## Codes de Réponse HTTP
+ Codes de Rponse HTTP
 
 | Code | Signification |
 |------|--------------|
-| 200 | OK - Succès |
-| 201 | Created - Ressource créée |
-| 400 | Bad Request - Données invalides |
-| 401 | Unauthorized - JWT manquant ou invalide |
-| 403 | Forbidden - Permissions insuffisantes |
-| 404 | Not Found - Ressource non trouvée |
-| 500 | Internal Server Error - Erreur serveur |
+|  | OK - Succès |
+|  | Created - Ressource cre |
+|  | Bad Request - Donnes invalides |
+|  | Unauthorized - JWT manquant ou invalide |
+|  | Forbidden - Permissions insuffisantes |
+|  | Not Found - Ressource non trouve |
+|  | Internal Server Error - Erreur serveur |
 
 ---
 
-## Configuration
+ Configuration
 
-### Fichier `config.py`
+ Fichier `config.py`
 
 ```python
-# Environment variables
+ Environment variables
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', SECRET_KEY)
 SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///development.db')
 ```
 
-### Variables d'environnement recommandées
+ Variables d'environnement recommandes
 
 ```bash
 export SECRET_KEY='your-very-secret-key'
@@ -380,101 +380,101 @@ export DEV_DATABASE_URI='sqlite:///development.db'
 
 ---
 
-## Base de Données
+ Base de Donnes
 
-### Schéma SQLite (Development)
+ Schma SQLite (Development)
 
-Les tables sont créées automatiquement au démarrage avec `db.create_all()`.
+Les tables sont cres automatiquement au dmarrage avec `db.create_all()`.
 
-### Migration vers MySQL (Production)
+ Migration vers MySQL (Production)
 
-1. Installer PyMySQL:
+. Installer PyMySQL:
 ```bash
 pip install pymysql
 ```
 
-2. Modifier `config.py`:
+. Modifier `config.py`:
 ```python
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@localhost/hbnb_db'
 ```
 
-3. Créer la base de données:
+. Crer la base de donnes:
 ```sql
 CREATE DATABASE hbnb_db;
 ```
 
-### Script SQL manuel
+ Script SQL manuel
 
-Pour créer la base manuellement:
+Pour crer la base manuellement:
 ```bash
-sqlite3 development.db < setup.sql
+sqlite development.db < setup.sql
 ```
 
 ---
 
-## Structure du Projet
+ Structure du Projet
 
 ```
-part3/
-├── app/
-│   ├── __init__.py                # Application Factory
-│   ├── extensions.py              # Extensions (db, bcrypt, jwt)
-│   ├── models/                    # Modèles SQLAlchemy
-│   │   ├── base_model.py          # BaseModel abstrait
-│   │   ├── user.py                # User avec bcrypt
-│   │   ├── place.py               # Place avec relations
-│   │   ├── review.py              # Review
-│   │   └── amenity.py             # Amenity
-│   ├── persistence/               # Repositories
-│   │   ├── repository.py          # SQLAlchemyRepository
-│   │   ├── user_repository.py     # UserRepository
-│   │   ├── place_repository.py    # PlaceRepository (pas utilisé)
-│   │   ├── review_repository.py   # ReviewRepository (pas utilisé)
-│   │   └── amenity_repository.py  # AmenityRepository (pas utilisé)
-│   ├── services/
-│   │   └── facade.py              # HBnBFacade (Business Logic)
-│   └── api/
-│       └── v1/
-│           ├── __init__.py        # Facade partagée
-│           ├── auth.py            # Login endpoint
-│           ├── users.py           # Endpoints utilisateurs
-│           ├── places.py          # Endpoints places
-│           ├── reviews.py         # Endpoints reviews
-│           ├── amenities.py       # Endpoints amenities
-│           └── protector.py       # Endpoint protégé exemple
-├── config.py                      # Configuration
-├── requirements.txt               # Dépendances
-├── run.py                         # Point d'entrée
-├── create_first_admin.py          # Script init admin
-├── setup.sql                      # Script SQL manuel
-├── ER_diag.md                     # Diagramme ER
-└── API_TESTING.md                 # Ce fichier
+part/
+ app/
+    __init__.py                 Application Factory
+    extensions.py               Extensions (db, bcrypt, jwt)
+    models/                     Modèles SQLAlchemy
+       base_model.py           BaseModel abstrait
+       user.py                 User avec bcrypt
+       place.py                Place avec relations
+       review.py               Review
+       amenity.py              Amenity
+    persistence/                Repositories
+       repository.py           SQLAlchemyRepository
+       user_repository.py      UserRepository
+       place_repository.py     PlaceRepository (pas utilis)
+       review_repository.py    ReviewRepository (pas utilis)
+       amenity_repository.py   AmenityRepository (pas utilis)
+    services/
+       facade.py               HBnBFacade (Business Logic)
+    api/
+        v/
+            __init__.py         Facade partage
+            auth.py             Login endpoint
+            users.py            Endpoints utilisateurs
+            places.py           Endpoints places
+            reviews.py          Endpoints reviews
+            amenities.py        Endpoints amenities
+            protector.py        Endpoint protg exemple
+ config.py                       Configuration
+ requirements.txt                Dpendances
+ run.py                          Point d'entre
+ create_first_admin.py           Script init admin
+ setup.sql                       Script SQL manuel
+ ER_diag.md                      Diagramme ER
+ API_TESTING.md                  Ce fichier
 
 ```
 
 ---
 
-## Dépannage
+ Dpannage
 
-### "ModuleNotFoundError: No module named 'flask'"
+ "ModuleNotFoundError: No module named 'flask'"
 
 ```bash
 source hbnbvenv/bin/activate
 pip install -r requirements.txt
 ```
 
-### "401 Unauthorized"
+ " Unauthorized"
 
-Vérifiez que le token JWT est valide et inclus dans l'header:
+Vrifiez que le token JWT est valide et inclus dans l'header:
 ```bash
 curl -H "Authorization: Bearer $TOKEN" ...
 ```
 
-### "403 Forbidden"
+ " Forbidden"
 
-Vérifiez que vous avez les permissions nécessaires (admin, owner, etc.)
+Vrifiez que vous avez les permissions ncessaires (admin, owner, etc.)
 
-### Base de données corrompue
+ Base de donnes corrompue
 
 ```bash
 rm development.db
@@ -483,7 +483,7 @@ python create_first_admin.py
 
 ---
 
-## Auteur
+ Auteur
 
-Projet HBnB - Part 3  
+Projet HBnB - Part   
 Enhanced Backend with Authentication and Database Integration

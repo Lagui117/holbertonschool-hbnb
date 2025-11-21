@@ -62,10 +62,10 @@ graph TB
 
 ---
 
-## 🎯 Flux global / Global flow
+##  Flux global / Global flow
 
 **FR :**  
-Le client envoie une requête → API / Endpoints  
+Le client envoie une requête  API / Endpoints  
 Elle passe par la **Facade** (HBnB Facade)  
 La Facade délègue au bon **Service** (User, Place, Review, Amenity)  
 Le Service applique les règles et appelle un **Repository**  
@@ -73,19 +73,19 @@ Le Repository communique avec la **Database**
 La réponse remonte dans le sens inverse.
 
 **EN :**  
-Client sends request → API / Endpoints  
+Client sends request  API / Endpoints  
 Goes through **HBnB Facade**  
 Facade delegates to the correct **Service** (User, Place, Review, Amenity)  
 Service applies rules and calls a **Repository**  
 Repository interacts with **Database**  
 Response flows back upward.
 
-➡️ **Sens unique** : Presentation → Business → Persistence (jamais l'inverse)  
-➡️ **One-way** : Presentation → Business → Persistence (never the other way)
+ **Sens unique** : Presentation  Business  Persistence (jamais l'inverse)  
+ **One-way** : Presentation  Business  Persistence (never the other way)
 
 ---
 
-## 🧩 Rôle des éléments / Role of components
+##  Rôle des éléments / Role of components
 
 | Élément | FR | EN |
 |---------|----|----|
@@ -98,30 +98,30 @@ Response flows back upward.
 
 ---
 
-## 💡 Exemple concret / Example flow
+##  Exemple concret / Example flow
 
 **FR :**
 ```
-POST /users → API → Facade → UserService → UserRepo → Database → Réponse 201
+POST /users  API  Facade  UserService  UserRepo  Database  Réponse 201
 ```
 
 **EN :**
 ```
-POST /users → API → Facade → UserService → UserRepo → Database → 201 Created
+POST /users  API  Facade  UserService  UserRepo  Database  201 Created
 ```
 
 ---
 
-## 🧱 Règles importantes / Key rules
+##  Règles importantes / Key rules
 
-### ❌ À éviter / Avoid
+###  À éviter / Avoid
 - **Aucune logique métier dans la couche Presentation**  
   *No business logic in Presentation layer*
   
 - **Aucune requête SQL directe dans les Services**  
   *No raw SQL in Services*
 
-### ✅ Bonnes pratiques / Best practices
+###  Bonnes pratiques / Best practices
 - **Une seule entrée : la Facade**  
   *Single entry point: the Facade*
   
@@ -130,7 +130,7 @@ POST /users → API → Facade → UserService → UserRepo → Database → 201
 
 ---
 
-## 🧾 Résumé / Summary
+##  Résumé / Summary
 
 **FR :**  
 Ce diagramme illustre la structure modulaire et hiérarchique d'HBnB. Chaque couche a une responsabilité unique, garantissant clarté, testabilité et maintenabilité.
@@ -140,7 +140,7 @@ This diagram shows HBnB's layered architecture. Each layer has a single responsi
 
 ---
 
-## 📚 Concepts clés / Key concepts
+##  Concepts clés / Key concepts
 
 ### Pattern Facade
 **FR :** Le facade sert de point d'entrée unique pour simplifier l'accès à la logique métier complexe. Il réduit le couplage entre la couche de présentation et les services métier.
@@ -153,7 +153,7 @@ This diagram shows HBnB's layered architecture. Each layer has a single responsi
 - **Persistence** : Accès et gestion des données
 
 ### Avantages / Benefits
-✓ **Maintenabilité** : Modifications isolées par couche  
-✓ **Testabilité** : Chaque composant testable indépendamment  
-✓ **Évolutivité** : Ajout de fonctionnalités sans régression  
-✓ **Clarté** : Responsabilités bien définies
+ **Maintenabilité** : Modifications isolées par couche  
+ **Testabilité** : Chaque composant testable indépendamment  
+ **Évolutivité** : Ajout de fonctionnalités sans régression  
+ **Clarté** : Responsabilités bien définies
