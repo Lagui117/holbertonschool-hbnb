@@ -433,20 +433,45 @@ function displayReviews(reviews) {
     
     if (!reviews || reviews.length === 0) {
         reviewsList.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to review!</p>';
+        updateReviewsStats(0, 0);
         return;
     }
+    
+    // Calculate average rating
+    const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+    updateReviewsStats(avgRating, reviews.length);
     
     // MUST use class="review-card" per specs
     reviewsList.innerHTML = reviews.map(review => `
         <div class="review-card">
             <div class="review-header">
                 <h4>${escapeHtml(review.user_first_name || 'Anonymous')} ${escapeHtml(review.user_last_name || '')}</h4>
-                <div class="review-rating">${'★'.repeat(review.rating || 0)}</div>
+                <div class="review-rating">${'★'.repeat(review.rating || 0)}${'☆'.repeat(5 - (review.rating || 0))}</div>
             </div>
             <p class="review-text">${escapeHtml(review.text || review.comment || '')}</p>
             <p class="review-date">${formatDate(review.created_at)}</p>
         </div>
     `).join('');
+}
+
+/**
+ * Update reviews statistics display
+ * @param {number} avgRating - Average rating
+ * @param {number} totalReviews - Total number of reviews
+ */
+function updateReviewsStats(avgRating, totalReviews) {
+    const avgElement = document.getElementById('average-rating');
+    const totalElement = document.getElementById('total-reviews');
+    
+    if (avgElement && totalElement) {
+        if (totalReviews > 0) {
+            avgElement.textContent = `★ ${avgRating.toFixed(1)}`;
+            totalElement.textContent = `(${totalReviews} review${totalReviews !== 1 ? 's' : ''})`;
+        } else {
+            avgElement.textContent = '';
+            totalElement.textContent = 'No reviews yet';
+        }
+    }
 }
 
 /**
@@ -469,7 +494,54 @@ function setupReviewForm(placeId) {
         }
     } else {
         reviewForm.style.display = 'block';
+        
+        // Setup star rating interactivity
+        setupStarRating();
+        
+        // Setup character counter
+        setupCharacterCounter();
+        
         reviewForm.addEventListener('submit', (e) => handleReviewSubmit(e, placeId));
+    }
+}
+
+/**
+ * Setup interactive star rating system
+ */
+function setupStarRating() {
+    const stars = document.querySelectorAll('.star-rating .star');
+    const ratingText = document.getElementById('rating-text');
+    const ratingLabels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+    
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = 5 - index;
+            if (ratingText) {
+                ratingText.textContent = `${rating} - ${ratingLabels[rating - 1]}`;
+                ratingText.style.color = '#FFB400';
+            }
+        });
+    });
+}
+
+/**
+ * Setup character counter for review text
+ */
+function setupCharacterCounter() {
+    const reviewText = document.getElementById('review-text');
+    const charCount = document.getElementById('char-count');
+    
+    if (reviewText && charCount) {
+        reviewText.addEventListener('input', () => {
+            const count = reviewText.value.length;
+            charCount.textContent = count;
+            
+            if (count < 10) {
+                charCount.style.color = '#dc3545';
+            } else {
+                charCount.style.color = '#28a745';
+            }
+        });
     }
 }
 

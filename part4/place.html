@@ -52,7 +52,13 @@
                 </div>
 
                 <div class="reviews-section" id="review-section">
-                    <h2>Reviews</h2>
+                    <div class="reviews-header">
+                        <h2>Reviews</h2>
+                        <div class="reviews-stats">
+                            <span class="average-rating" id="average-rating"></span>
+                            <span class="total-reviews" id="total-reviews"></span>
+                        </div>
+                    </div>
                     <div id="reviews-list" class="reviews-list"></div>
                     
                     <div class="add-review-section">
@@ -60,18 +66,19 @@
                         <form id="review-form" class="review-form">
                             <div class="form-group">
                                 <label>Rating</label>
-                                <div class="rating-input">
+                                <div class="rating-input star-rating">
                                     <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5">5 stars</label>
+                                    <label for="star5" class="star" title="5 stars">★</label>
                                     <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4">4 stars</label>
+                                    <label for="star4" class="star" title="4 stars">★</label>
                                     <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3">3 stars</label>
+                                    <label for="star3" class="star" title="3 stars">★</label>
                                     <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2">2 stars</label>
+                                    <label for="star2" class="star" title="2 stars">★</label>
                                     <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1">1 star</label>
+                                    <label for="star1" class="star" title="1 star">★</label>
                                 </div>
+                                <p class="rating-text" id="rating-text">Select your rating</p>
                             </div>
                             
                             <div class="form-group">
@@ -82,7 +89,9 @@
                                     rows="5" 
                                     placeholder="Share your experience..."
                                     required
+                                    minlength="10"
                                 ></textarea>
+                                <small class="char-count"><span id="char-count">0</span> characters (minimum 10)</small>
                             </div>
                             
                             <div id="review-error" class="error-message" style="display: none;"></div>
