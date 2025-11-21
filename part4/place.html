@@ -3,82 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View place details and reviews on HBnB">
     <title>Place Details - HBnB</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
-            <nav>
+    <header role="banner">
+        <div class="header-container container">
+            <a href="index.html" aria-label="HBnB Home">
+                <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
+            </a>
+            <nav role="navigation" aria-label="Main navigation">
                 <a href="index.html">Home</a>
                 <a href="login.html" id="login-link" class="login-button">Login</a>
             </nav>
         </div>
     </header>
 
-    <main>
+    <main role="main">
         <div class="container">
-            <div id="loading" class="loading" style="display: none;">Loading place details...</div>
-            <div id="error" class="error-message" style="display: none;"></div>
+            <!-- Loading State -->
+            <div id="loading" class="loading" style="display: none;" role="status" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Loading place details...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="error-message" style="display: none;" role="alert" aria-live="assertive"></div>
             
-            <div id="place-details" class="place-details" style="display: none;">
-                <div class="place-header">
-                    <h1 id="place-title"></h1>
-                    <p class="place-price" id="place-price"></p>
-                </div>
-
-                <div class="place-info">
-                    <div class="info-section">
-                        <h2>Description</h2>
-                        <p id="place-description"></p>
-                    </div>
-
-                    <div class="info-section">
-                        <h2>Host Information</h2>
-                        <p id="place-host"></p>
-                    </div>
-
-                    <div class="info-section">
-                        <h2>Amenities</h2>
-                        <ul id="place-amenities" class="amenities-list"></ul>
-                    </div>
-
-                    <div class="info-section">
-                        <h2>Location</h2>
-                        <p><strong>Latitude:</strong> <span id="place-latitude"></span></p>
-                        <p><strong>Longitude:</strong> <span id="place-longitude"></span></p>
-                    </div>
-                </div>
-
-                <div class="reviews-section" id="review-section">
-                    <div class="reviews-header">
-                        <h2>Reviews</h2>
-                        <div class="reviews-stats">
-                            <span class="average-rating" id="average-rating"></span>
-                            <span class="total-reviews" id="total-reviews"></span>
+            <!-- Place Details Content -->
+            <article id="place-details" class="place-details" style="display: none;" itemscope itemtype="https://schema.org/Place">
+                <!-- Place Header -->
+                <header class="place-header">
+                    <h1 id="place-title" itemprop="name"></h1>
+                    <div class="place-meta" style="display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap;">
+                        <p class="place-price" id="place-price" itemprop="priceRange"></p>
+                        <div id="place-rating" class="place-rating" style="display: flex; align-items: center; gap: var(--space-2);">
+                            <!-- Rating will be inserted here -->
                         </div>
                     </div>
-                    <div id="reviews-list" class="reviews-list"></div>
+                </header>
+
+                <!-- Place Information Grid -->
+                <div class="place-info">
+                    <section class="info-section" aria-labelledby="description-heading">
+                        <h2 id="description-heading">Description</h2>
+                        <p id="place-description" itemprop="description"></p>
+                    </section>
+
+                    <section class="info-section" aria-labelledby="host-heading">
+                        <h2 id="host-heading">Host Information</h2>
+                        <div id="place-host" itemprop="provider" itemscope itemtype="https://schema.org/Person">
+                            <!-- Host info will be inserted here -->
+                        </div>
+                    </section>
+
+                    <section class="info-section" aria-labelledby="amenities-heading">
+                        <h2 id="amenities-heading">Amenities</h2>
+                        <ul id="place-amenities" class="amenities-list" role="list">
+                            <!-- Amenities will be inserted here -->
+                        </ul>
+                    </section>
+
+                    <section class="info-section" aria-labelledby="location-heading">
+                        <h2 id="location-heading">Location</h2>
+                        <div itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+                            <p><strong>Latitude:</strong> <span id="place-latitude" itemprop="latitude"></span></p>
+                            <p><strong>Longitude:</strong> <span id="place-longitude" itemprop="longitude"></span></p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Reviews Section -->
+                <section class="reviews-section" id="review-section" aria-labelledby="reviews-heading">
+                    <header class="reviews-header">
+                        <h2 id="reviews-heading">Guest Reviews</h2>
+                        <div class="reviews-stats" aria-label="Review statistics">
+                            <span class="average-rating" id="average-rating" aria-label="Average rating"></span>
+                            <span class="total-reviews" id="total-reviews" aria-label="Total number of reviews"></span>
+                        </div>
+                    </header>
+
+                    <!-- Reviews List -->
+                    <div id="reviews-list" class="reviews-list" role="list" aria-label="List of reviews">
+                        <!-- Reviews will be dynamically inserted here -->
+                    </div>
                     
+                    <!-- Add Review Form -->
                     <div class="add-review-section">
-                        <h3>Add Your Review</h3>
-                        <form id="review-form" class="review-form">
+                        <h3>Share Your Experience</h3>
+                        <p class="text-secondary" style="margin-bottom: var(--space-6); font-size: var(--fs-sm);">
+                            Your feedback helps other travelers make informed decisions
+                        </p>
+
+                        <form id="review-form" class="review-form" novalidate aria-labelledby="review-form-heading">
+                            <h4 id="review-form-heading" class="sr-only">Add Review Form</h4>
+
                             <div class="form-group">
-                                <label>Rating</label>
-                                <div class="rating-input star-rating">
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5" class="star" title="5 stars">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4" class="star" title="4 stars">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3" class="star" title="3 stars">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2" class="star" title="2 stars">★</label>
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1" class="star" title="1 star">★</label>
+                                <label id="rating-label">Your Rating</label>
+                                <div class="rating-input star-rating" role="radiogroup" aria-labelledby="rating-label" aria-required="true">
+                                    <input type="radio" id="star5" name="rating" value="5" required aria-label="5 stars">
+                                    <label for="star5" class="star" title="Excellent - 5 stars" aria-hidden="true">★</label>
+                                    <input type="radio" id="star4" name="rating" value="4" aria-label="4 stars">
+                                    <label for="star4" class="star" title="Very Good - 4 stars" aria-hidden="true">★</label>
+                                    <input type="radio" id="star3" name="rating" value="3" aria-label="3 stars">
+                                    <label for="star3" class="star" title="Good - 3 stars" aria-hidden="true">★</label>
+                                    <input type="radio" id="star2" name="rating" value="2" aria-label="2 stars">
+                                    <label for="star2" class="star" title="Fair - 2 stars" aria-hidden="true">★</label>
+                                    <input type="radio" id="star1" name="rating" value="1" aria-label="1 star">
+                                    <label for="star1" class="star" title="Poor - 1 star" aria-hidden="true">★</label>
                                 </div>
-                                <p class="rating-text" id="rating-text">Select your rating</p>
+                                <p class="rating-text" id="rating-text" aria-live="polite">Select your rating</p>
                             </div>
                             
                             <div class="form-group">
@@ -87,26 +122,37 @@
                                     id="review-text" 
                                     name="review-text" 
                                     rows="5" 
-                                    placeholder="Share your experience..."
+                                    placeholder="Share your experience with this place..."
                                     required
                                     minlength="10"
+                                    aria-required="true"
+                                    aria-describedby="review-text-hint"
                                 ></textarea>
-                                <small class="char-count"><span id="char-count">0</span> characters (minimum 10)</small>
+                                <small id="review-text-hint" class="char-count" aria-live="polite">
+                                    <span id="char-count">0</span> characters (minimum 10 required)
+                                </small>
                             </div>
                             
-                            <div id="review-error" class="error-message" style="display: none;"></div>
-                            <div id="review-success" class="success-message" style="display: none;"></div>
+                            <div id="review-error" class="error-message" style="display: none;" role="alert" aria-live="polite"></div>
+                            <div id="review-success" class="success-message" style="display: none;" role="status" aria-live="polite"></div>
                             
-                            <button type="submit" class="submit-button">Submit Review</button>
+                            <button type="submit" class="btn btn-primary submit-button">
+                                <span class="button-text">Submit Review</span>
+                                <span class="button-loader hidden" aria-hidden="true">
+                                    <span class="spinner"></span>
+                                </span>
+                            </button>
                         </form>
                     </div>
-                </div>
-            </div>
+                </section>
+            </article>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 HBnB. All rights reserved.</p>
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 HBnB. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="config.js"></script>

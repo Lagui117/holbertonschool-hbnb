@@ -3,66 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Add your review for a place on HBnB">
     <title>Add Review - HBnB</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
-            <nav>
+    <header role="banner">
+        <div class="header-container container">
+            <a href="index.html" aria-label="HBnB Home">
+                <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
+            </a>
+            <nav role="navigation" aria-label="Main navigation">
                 <a href="index.html">Home</a>
                 <a href="login.html" id="login-link" class="login-button">Login</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <div class="container">
-            <div class="review-form-wrapper">
-                <h1>Add Your Review</h1>
-                <p class="subtitle" id="place-name-subtitle">Share your experience</p>
+    <main role="main" class="login-container">
+        <div class="login-card" style="max-width: 700px;">
+            <h1>Share Your Experience</h1>
+            <p id="place-name-subtitle" class="text-center text-secondary mb-8">
+                Your feedback helps other travelers make informed decisions
+            </p>
 
-                <form id="review-form" class="review-form">
-                    <div class="form-group">
-                        <label for="review-text">Your Review</label>
-                        <textarea 
-                            id="review-text" 
-                            name="review-text" 
-                            rows="6"
-                            placeholder="Share your thoughts about this place..."
-                            required
-                            minlength="10"
-                        ></textarea>
-                        <small>Minimum 10 characters</small>
+            <div id="error-message" class="error-message" style="display: none;" role="alert" aria-live="polite"></div>
+            <div id="success-message" class="success-message" style="display: none;" role="status" aria-live="polite"></div>
+
+            <form id="review-form" novalidate aria-labelledby="review-form-heading">
+                <h2 id="review-form-heading" class="sr-only">Review Form</h2>
+
+                <div class="form-group">
+                    <label id="rating-label">Your Rating</label>
+                    <div class="star-rating" role="radiogroup" aria-labelledby="rating-label" aria-required="true">
+                        <input type="radio" id="star5" name="rating" value="5" required aria-label="5 stars - Excellent">
+                        <label for="star5" class="star" title="Excellent - 5 stars" aria-hidden="true">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" aria-label="4 stars - Very Good">
+                        <label for="star4" class="star" title="Very Good - 4 stars" aria-hidden="true">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" aria-label="3 stars - Good">
+                        <label for="star3" class="star" title="Good - 3 stars" aria-hidden="true">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" aria-label="2 stars - Fair">
+                        <label for="star2" class="star" title="Fair - 2 stars" aria-hidden="true">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" aria-label="1 star - Poor">
+                        <label for="star1" class="star" title="Poor - 1 star" aria-hidden="true">★</label>
                     </div>
+                    <p class="rating-text" id="rating-text" aria-live="polite">Select your rating</p>
+                </div>
 
-                    <div class="form-group">
-                        <label for="review-rating">Rating</label>
-                        <select id="review-rating" name="review-rating" required>
-                            <option value="">Select a rating</option>
-                            <option value="1">1 - Poor</option>
-                            <option value="2">2 - Fair</option>
-                            <option value="3">3 - Good</option>
-                            <option value="4">4 - Very Good</option>
-                            <option value="5">5 - Excellent</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="review-text">Your Review</label>
+                    <textarea 
+                        id="review-text" 
+                        name="review-text" 
+                        rows="6"
+                        placeholder="Share your thoughts about this place..."
+                        required
+                        minlength="10"
+                        aria-required="true"
+                        aria-describedby="review-hint"
+                    ></textarea>
+                    <small id="review-hint" class="char-count" aria-live="polite">
+                        <span id="char-count">0</span> characters (minimum 10 required)
+                    </small>
+                </div>
 
-                    <div id="error-message" class="error-message" style="display: none;"></div>
-                    <div id="success-message" class="success-message" style="display: none;"></div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="submit-button">Submit Review</button>
-                        <button type="button" id="cancel-button" class="cancel-button">Cancel</button>
-                    </div>
-                </form>
-            </div>
+                <div class="form-actions" style="display: flex; gap: var(--space-4); margin-top: var(--space-8);">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <span class="button-text">Submit Review</span>
+                        <span class="button-loader hidden" aria-hidden="true">
+                            <span class="spinner"></span>
+                        </span>
+                    </button>
+                    <button type="button" id="cancel-button" class="btn btn-ghost" style="flex: 1;">
+                        Cancel
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 HBnB. All rights reserved.</p>
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 HBnB. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="config.js"></script>

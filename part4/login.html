@@ -3,34 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to HBnB - Find and book your perfect place to stay">
     <title>Login - HBnB</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
-            <nav>
+    <header role="banner">
+        <div class="header-container container">
+            <a href="index.html" aria-label="HBnB Home">
+                <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
+            </a>
+            <nav role="navigation" aria-label="Main navigation">
                 <a href="index.html">Home</a>
             </nav>
         </div>
     </header>
 
-    <main class="login-container">
-        <div class="login-form-wrapper">
+    <main role="main" class="login-container">
+        <div class="login-card">
             <h1>Welcome Back</h1>
-            <p class="subtitle">Please login to your account</p>
+            <p class="text-center text-secondary mb-8">Sign in to continue to HBnB</p>
             
-            <form id="login-form" class="login-form">
+            <div id="error-message" class="error-message" style="display: none;" role="alert" aria-live="polite"></div>
+            <div id="success-message" class="success-message" style="display: none;" role="status" aria-live="polite"></div>
+            
+            <form id="login-form" novalidate aria-labelledby="login-heading">
+                <h2 id="login-heading" class="sr-only">Login Form</h2>
+                
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email Address</label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
-                        placeholder="Enter your email"
+                        placeholder="you@example.com"
                         required
+                        autocomplete="email"
+                        aria-required="true"
+                        aria-describedby="email-hint"
                     >
+                    <small id="email-hint" class="form-hint hidden">Please enter a valid email address</small>
                 </div>
 
                 <div class="form-group">
@@ -41,18 +53,30 @@
                         name="password" 
                         placeholder="Enter your password"
                         required
+                        autocomplete="current-password"
+                        aria-required="true"
+                        minlength="6"
                     >
                 </div>
 
-                <div id="error-message" class="error-message" style="display: none;"></div>
-
-                <button type="submit" class="login-button">Login</button>
+                <button type="submit" class="btn btn-primary submit-button" id="login-button">
+                    <span class="button-text">Sign In</span>
+                    <span class="button-loader hidden" aria-hidden="true">
+                        <span class="spinner"></span>
+                    </span>
+                </button>
             </form>
+            
+            <p class="text-center text-secondary mt-8" style="font-size: var(--fs-sm);">
+                Don't have an account? Contact your administrator
+            </p>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 HBnB. All rights reserved.</p>
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 HBnB. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="config.js"></script>

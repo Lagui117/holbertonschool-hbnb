@@ -1,20 +1,11 @@
 /**
- * HBnB Part 4 - Professional Web Client
- * Modern, Accessible, Optimized JavaScript ES6
+ * HBnB Part 4 - Simple Web Client
+ * JavaScript ES6 - Strict Compliance with Project Specifications
  * 
  * NO FRAMEWORKS - Pure Vanilla JS
  * Uses Fetch API for all HTTP requests
  * JWT stored in cookies only (not localStorage)
- * 
- * FEATURES:
- * - Enhanced UX with loading states
- * - Better error handling & user feedback
- * - Accessibility improvements
- * - Input validation & sanitization
- * - Responsive & performant
  */
-
-'use strict';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -23,143 +14,6 @@
 const API_BASE_URL = CONFIG?.API_BASE_URL || 'http://localhost:5000/api/v1';
 const COOKIE_NAME = CONFIG?.COOKIE_NAME || 'token';
 const COOKIE_EXPIRY_DAYS = CONFIG?.COOKIE_EXPIRY_DAYS || 7;
-
-// ============================================================================
-// UI UTILITY FUNCTIONS - Enhanced User Experience
-// ============================================================================
-
-/**
- * Show/hide loading state on button
- * @param {HTMLButtonElement} button - Button element
- * @param {boolean} isLoading - Loading state
- */
-function toggleButtonLoading(button, isLoading) {
-    if (!button) return;
-    
-    const textEl = button.querySelector('.button-text');
-    const loaderEl = button.querySelector('.button-loader');
-    
-    button.disabled = isLoading;
-    
-    if (textEl && loaderEl) {
-        if (isLoading) {
-            textEl.style.display = 'none';
-            loaderEl.classList.remove('hidden');
-        } else {
-            textEl.style.display = 'inline';
-            loaderEl.classList.add('hidden');
-        }
-    }
-}
-
-/**
- * Show message to user
- * @param {string} elementId - ID of message container
- * @param {string} message - Message text
- * @param {string} type - Message type: 'success', 'error', 'info'
- */
-function showMessage(elementId, message, type = 'error') {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-    
-    element.textContent = message;
-    element.className = `${type}-message`;
-    element.style.display = 'block';
-    element.setAttribute('role', type === 'error' ? 'alert' : 'status');
-    
-    // Auto-hide success messages after 5 seconds
-    if (type === 'success') {
-        setTimeout(() => {
-            element.style.display = 'none';
-        }, 5000);
-    }
-}
-
-/**
- * Hide message
- * @param {string} elementId - ID of message container
- */
-function hideMessage(elementId) {
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.style.display = 'none';
-    }
-}
-
-/**
- * Show toast notification (non-blocking)
- * @param {string} message - Message text
- * @param {string} type - Type: 'success', 'error', 'info'
- */
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    toast.setAttribute('role', 'status');
-    toast.setAttribute('aria-live', 'polite');
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-/**
- * Validate email format
- * @param {string} email - Email address
- * @returns {boolean} Valid email
- */
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-/**
- * Debounce function for performance
- * @param {Function} func - Function to debounce
- * @param {number} wait - Wait time in ms
- * @returns {Function} Debounced function
- */
-function debounce(func, wait = 300) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-/**
- * Show/hide loading state
- * @param {boolean} show - Show or hide
- */
-function toggleLoading(show) {
-    const loading = document.getElementById('loading');
-    if (loading) {
-        loading.style.display = show ? 'block' : 'none';
-    }
-}
-
-/**
- * Show/hide error
- * @param {string} message - Error message (empty to hide)
- */
-function toggleError(message = '') {
-    const error = document.getElementById('error');
-    if (error) {
-        if (message) {
-            error.textContent = message;
-            error.style.display = 'block';
-        } else {
-            error.style.display = 'none';
-        }
-    }
-}
 
 // ============================================================================
 // COOKIE MANAGEMENT FUNCTIONS
@@ -291,37 +145,20 @@ function initLoginPage() {
 }
 
 /**
- * Handle login form submission with improved UX
+ * Handle login form submission
  * @param {Event} e - Submit event
  */
 async function loginUser(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value.trim();
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const submitButton = e.target.querySelector('button[type="submit"]');
+    const errorMessage = document.getElementById('error-message');
     
-    // Hide previous messages
-    hideMessage('error-message');
-    hideMessage('success-message');
-    
-    // Validate inputs
-    if (!email || !password) {
-        showMessage('error-message', 'Please enter both email and password.', 'error');
-        return;
-    }
-    
-    if (!isValidEmail(email)) {
-        showMessage('error-message', 'Please enter a valid email address.', 'error');
-        document.getElementById('email').focus();
-        return;
-    }
-    
-    // Show loading state
-    toggleButtonLoading(submitButton, true);
+    errorMessage.style.display = 'none';
     
     try {
-        // POST to /auth/login endpoint
+        // POST to /login endpoint
         const data = await apiRequest('/auth/login', {
             method: 'POST',
             skipAuth: true,
@@ -331,28 +168,15 @@ async function loginUser(e) {
         // Store JWT token in cookie
         if (data.access_token) {
             setCookie(COOKIE_NAME, data.access_token);
-            showMessage('success-message', 'Login successful! Redirecting...', 'success');
-            
-            // Redirect after short delay for UX
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 500);
+            // Redirect to index page
+            window.location.href = 'index.html';
         } else {
-            throw new Error('No authentication token received from server.');
+            throw new Error('No token received');
         }
     } catch (error) {
         console.error('Login error:', error);
-        let errorMessage = 'Login failed. Please check your credentials and try again.';
-        
-        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-            errorMessage = 'Invalid email or password. Please try again.';
-        } else if (error.message.includes('network') || error.message.includes('Failed to fetch')) {
-            errorMessage = 'Network error. Please check your connection and try again.';
-        }
-        
-        showMessage('error-message', errorMessage, 'error');
-    } finally {
-        toggleButtonLoading(submitButton, false);
+        errorMessage.textContent = error.message || 'Login failed. Please check your credentials.';
+        errorMessage.style.display = 'block';
     }
 }
 

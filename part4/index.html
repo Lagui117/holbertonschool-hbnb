@@ -3,52 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBnB - Places</title>
+    <meta name="description" content="HBnB - Find and book unique places to stay around the world">
+    <title>HBnB - Find Your Perfect Place</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
-            <nav>
-                <a href="index.html">Home</a>
+    <header role="banner">
+        <div class="header-container container">
+            <a href="index.html" aria-label="HBnB Home">
+                <img src="assets/logo.svg" alt="HBnB Logo" class="logo">
+            </a>
+            <nav role="navigation" aria-label="Main navigation">
+                <a href="index.html" aria-current="page">Home</a>
                 <a href="login.html" id="login-link" class="login-button">Login</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="filters-section">
+    <main role="main">
+        <!-- Hero Section with Filters -->
+        <section class="filters-section" aria-labelledby="hero-heading">
             <div class="container">
-                <h1>Find Your Perfect Place</h1>
+                <h1 id="hero-heading">Find Your Perfect Place</h1>
+                <p class="text-center" style="color: var(--background); font-size: var(--fs-md); margin-bottom: var(--space-8);">
+                    Discover unique stays and experiences around the world
+                </p>
                 
-                <div class="filters">
+                <div class="filters" role="search" aria-label="Filter places">
                     <div class="filter-group">
-                        <label for="price-filter">Filter by Price</label>
-                        <select id="price-filter">
-                            <option value="all">All</option>
-                            <option value="10">$10</option>
-                            <option value="50">$50</option>
-                            <option value="100">$100</option>
+                        <label for="price-filter" id="price-filter-label">Filter by Price</label>
+                        <select id="price-filter" aria-labelledby="price-filter-label" aria-describedby="price-filter-desc">
+                            <option value="all">All Prices</option>
+                            <option value="10">Up to $10/night</option>
+                            <option value="50">Up to $50/night</option>
+                            <option value="100">Up to $100/night</option>
                         </select>
+                        <small id="price-filter-desc" class="sr-only">Filter places by maximum nightly price</small>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="places-section">
+        <!-- Places Grid Section -->
+        <section class="places-section" aria-labelledby="places-heading">
             <div class="container">
-                <div id="places-list" class="places-grid">
-                    <!-- Places will be loaded dynamically -->
+                <div class="section-header" style="margin-bottom: var(--space-8);">
+                    <h2 id="places-heading" style="margin-bottom: var(--space-2);">Available Places</h2>
+                    <p id="places-count" class="text-secondary" style="font-size: var(--fs-sm);"></p>
                 </div>
-                <div id="loading" class="loading" style="display: none;">Loading places...</div>
-                <div id="error" class="error-message" style="display: none;"></div>
+
+                <!-- Loading State -->
+                <div id="loading" class="loading" style="display: none;" role="status" aria-live="polite">
+                    <div class="spinner"></div>
+                    <p>Loading amazing places...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error" class="error-message" style="display: none;" role="alert" aria-live="assertive"></div>
+
+                <!-- Places Grid -->
+                <div id="places-list" class="places-grid" role="list" aria-label="List of available places">
+                    <!-- Places will be dynamically inserted here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="no-places" style="display: none;" role="status">
+                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin: 0 auto var(--space-6);">
+                        <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="2" fill="none" opacity="0.2"/>
+                        <path d="M30 50h40M50 30v40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h3 style="color: var(--text-secondary); font-size: var(--fs-xl); margin-bottom: var(--space-3);">No places found</h3>
+                    <p style="color: var(--text-light);">Try adjusting your filters to see more results</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 HBnB. All rights reserved.</p>
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 HBnB. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="config.js"></script>
