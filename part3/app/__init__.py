@@ -1,5 +1,6 @@
 from flask import Flask, redirect
 from flask_restx import Api
+from flask_cors import CORS
 from app.persistence.repository import SQLAlchemyRepository
 from app.extensions import db, bcrypt, jwt
 from app.api.v1.users import api as users_ns
@@ -16,6 +17,9 @@ def create_app(config_class=DevelopmentConfig):
     
     # Load the configuration
     app.config.from_object(config_class)
+    
+    # Enable CORS for frontend communication
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
     # Initialize extensions
     db.init_app(app)
