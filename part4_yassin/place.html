@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details - HBnB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <img src="logo.svg" alt="HBnB Logo" class="logo">
+                <h1>HBnB</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="loading" style="text-align: center; padding: 2rem;">
+            Loading place details...
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <div id="place-details" class="place-details" style="display: none;">
+            <section class="place-header">
+                <h2 id="place-title"></h2>
+                <p id="place-price" class="price"></p>
+            </section>
+
+            <section class="place-info">
+                <div>
+                    <h3>Description</h3>
+                    <p id="place-description"></p>
+                </div>
+
+                <div>
+                    <h3>Host</h3>
+                    <p id="place-host"></p>
+                </div>
+
+                <div>
+                    <h3>Amenities</h3>
+                    <ul id="place-amenities"></ul>
+                </div>
+
+                <div>
+                    <h3>Location</h3>
+                    <p>Latitude: <span id="place-latitude"></span></p>
+                    <p>Longitude: <span id="place-longitude"></span></p>
+                </div>
+            </section>
+
+            <section class="reviews-section">
+                <h3>Reviews</h3>
+                <div id="reviews-list"></div>
+
+                <div id="add-review" class="add-review" style="display: none;">
+                    <h4>Add Your Review</h4>
+                    <form id="review-form" class="form">
+                        <div class="form-group">
+                            <label for="rating">Rating (1-5):</label>
+                            <select id="rating" name="rating" required>
+                                <option value="">Select rating</option>
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Very Good</option>
+                                <option value="3">3 - Good</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="1">1 - Poor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="review-text">Your Review:</label>
+                            <textarea id="review-text" name="text" rows="4" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

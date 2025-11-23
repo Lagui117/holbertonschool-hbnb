@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review - HBnB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <img src="logo.svg" alt="HBnB Logo" class="logo">
+                <h1>HBnB</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="review-container">
+        <div class="add-review">
+            <h2>Add Your Review</h2>
+            
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            
+            <form id="review-form" class="form">
+                <div class="form-group">
+                    <label for="rating">Rating (1-5):</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="3">3 - Good</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="1">1 - Poor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="review-text">Your Review:</label>
+                    <textarea id="review-text" name="text" rows="6" required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
