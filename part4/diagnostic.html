@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Part 3 <-> Part 4</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>�� Diagnostic Part 3 <-> Part 4</h1>
+    
+    <div class="test" id="test-config">
+        <h3>1. Configuration</h3>
+        <button onclick="testConfig()">Tester</button>
+        <div id="result-config"></div>
+    </div>
+    
+    <div class="test" id="test-api">
+        <h3>2. Connexion API</h3>
+        <button onclick="testAPIConnection()">Tester</button>
+        <div id="result-api"></div>
+    </div>
+    
+    <div class="test" id="test-login">
+        <h3>3. Login & Token</h3>
+        <button onclick="testLogin()">Tester</button>
+        <div id="result-login"></div>
+    </div>
+    
+    <div class="test" id="test-places">
+        <h3>4. Récupération Places</h3>
+        <button onclick="testPlaces()">Tester</button>
+        <div id="result-places"></div>
+    </div>
+    
+    <div class="test" id="test-reviews">
+        <h3>5. Récupération Reviews</h3>
+        <button onclick="testReviews()">Tester</button>
+        <div id="result-reviews"></div>
+    </div>
+    
+    <div class="test" id="test-create-review">
+        <h3>6. Création Review</h3>
+        <button onclick="testCreateReview()">Tester</button>
+        <div id="result-create-review"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        let token = null;
+        
+        function testConfig() {
+            const result = document.getElementById('result-config');
+            const testDiv = document.getElementById('test-config');
+            try {
+                result.innerHTML = `<pre>
+CONFIG existe: ${typeof CONFIG !== 'undefined' ? '✓' : '✗'}
+API_BASE_URL: ${CONFIG?.API_BASE_URL || 'NON DÉFINI'}
+COOKIE_NAME: ${CONFIG?.COOKIE_NAME || 'NON DÉFINI'}
+PRICE_FILTERS: ${JSON.stringify(CONFIG?.PRICE_FILTERS || [], null, 2)}
+</pre>`;
+                testDiv.className = 'test success';
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+        
+        async function testAPIConnection() {
+            const result = document.getElementById('result-api');
+            const testDiv = document.getElementById('test-api');
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/places/`);
+                const data = await response.json();
+                result.innerHTML = `<pre>✓ Connexion OK
+Status: ${response.status}
+Places reçus: ${data.length}
+CORS: ${response.headers.get('Access-Control-Allow-Origin') || 'header absent'}</pre>`;
+                testDiv.className = 'test success';
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+        
+        async function testLogin() {
+            const result = document.getElementById('result-login');
+            const testDiv = document.getElementById('test-login');
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email: 'admin@hbnb.io', password: 'admin1234'})
+                });
+                const data = await response.json();
+                token = data.access_token;
+                result.innerHTML = `<pre>✓ Login OK
+Token reçu: ${token.substring(0, 50)}...
+Token stocké pour tests suivants</pre>`;
+                testDiv.className = 'test success';
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+        
+        async function testPlaces() {
+            const result = document.getElementById('result-places');
+            const testDiv = document.getElementById('test-places');
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/places/`);
+                const data = await response.json();
+                result.innerHTML = `<pre>✓ Places récupérés: ${data.length}
+${JSON.stringify(data[0], null, 2)}</pre>`;
+                testDiv.className = 'test success';
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+        
+        async function testReviews() {
+            const result = document.getElementById('result-reviews');
+            const testDiv = document.getElementById('test-reviews');
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/reviews/places/1/reviews`);
+                const data = await response.json();
+                result.innerHTML = `<pre>✓ Reviews récupérés: ${data.length}
+${JSON.stringify(data, null, 2)}</pre>`;
+                testDiv.className = 'test success';
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+        
+        async function testCreateReview() {
+            const result = document.getElementById('result-create-review');
+            const testDiv = document.getElementById('test-create-review');
+            if (!token) {
+                result.innerHTML = '<pre>⚠️ Veuillez d\'abord tester le login</pre>';
+                return;
+            }
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/reviews/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        text: 'Test review from diagnostic page',
+                        rating: 4,
+                        place_id: '1'
+                    })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    result.innerHTML = `<pre>✓ Review créée
+${JSON.stringify(data, null, 2)}</pre>`;
+                    testDiv.className = 'test success';
+                } else {
+                    result.innerHTML = `<pre>⚠️ Réponse API:
+Status: ${response.status}
+${JSON.stringify(data, null, 2)}</pre>`;
+                    testDiv.className = 'test';
+                }
+            } catch (e) {
+                result.innerHTML = `<pre>✗ Erreur: ${e.message}</pre>`;
+                testDiv.className = 'test error';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -155,6 +155,7 @@ class PlaceReviewList(Resource):
             return [{'id': review.id,
                      'text': review.text,
                      'rating': review.rating,
-                     'user_id': review.user.id} for review in reviews], 200
+                     'user_id': review.user.id,
+                     'user_name': f"{review.user.first_name} {review.user.last_name}".strip() or review.user.email} for review in reviews], 200
         except ValueError as e:
             return {'error': str(e)}, 404

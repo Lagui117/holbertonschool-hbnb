@@ -7,7 +7,7 @@
 // 1. CONFIGURATION
 // ============================================================================
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = CONFIG?.API_BASE_URL || 'http://localhost:5000/api/v1';
 
 // ============================================================================
 // 2. UTILITY FUNCTIONS - Cookie Management
@@ -429,7 +429,7 @@ async function fetchPlaces() {
     placesListElement.innerHTML = createSkeletonPlaceCards(6);
     
     try {
-        const places = await apiRequest('/places', {
+        const places = await apiRequest('/places/', {
             method: 'GET',
             skipAuth: true
         });
@@ -551,9 +551,18 @@ function filterPlacesByPrice() {
     const priceFilter = document.getElementById('price-filter');
     if (!priceFilter) return;
     
-    const maxPrice = parseInt(priceFilter.value);
+    const selectedValue = priceFilter.value;
     
-    if (isNaN(maxPrice) || maxPrice === 0) {
+    // If 'all' is selected, show all places
+    if (selectedValue === 'all') {
+        displayPlaces(allPlaces);
+        updatePlacesCount(allPlaces.length);
+        return;
+    }
+    
+    const maxPrice = parseInt(selectedValue);
+    
+    if (isNaN(maxPrice)) {
         displayPlaces(allPlaces);
         updatePlacesCount(allPlaces.length);
         return;
@@ -646,8 +655,8 @@ async function displayPlaceDetails(place) {
     document.getElementById('place-latitude').textContent = place.latitude || 'N/A';
     document.getElementById('place-longitude').textContent = place.longitude || 'N/A';
     
-    // Display reviews
-    displayReviews(place.reviews || []);
+    // Fetch and display reviews
+    await fetchAndDisplayReviews(place.id);
     
     // Setup review form
     setupReviewForm(place.id);
@@ -709,6 +718,23 @@ function displayAmenities(amenities) {
         const amenityName = typeof amenity === 'object' ? amenity.name : amenity;
         return `<li>${escapeHtml(amenityName)}</li>`;
     }).join('');
+}
+
+/**
+ * Fetch and display reviews for a place
+ * @param {string} placeId - Place ID
+ */
+async function fetchAndDisplayReviews(placeId) {
+    try {
+        const reviews = await apiRequest(`/reviews/places/${placeId}/reviews`, {
+            method: 'GET',
+            skipAuth: true
+        });
+        displayReviews(reviews);
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        displayReviews([]);
+    }
 }
 
 /**
@@ -857,11 +883,12 @@ function setupReviewForm(placeId) {
         setButtonLoading(submitButton, true);
         
         try {
-            await apiRequest(`/places/${placeId}/reviews`, {
+            await apiRequest(`/reviews/`, {
                 method: 'POST',
                 body: JSON.stringify({
                     text: text,
-                    rating: parseInt(rating, 10)
+                    rating: parseInt(rating, 10),
+                    place_id: placeId
                 })
             });
             
@@ -984,11 +1011,12 @@ function initAddReviewPage() {
         setButtonLoading(submitButton, true);
         
         try {
-            await apiRequest(`/places/${placeId}/reviews`, {
+            await apiRequest(`/reviews/`, {
                 method: 'POST',
                 body: JSON.stringify({
                     text: text,
-                    rating: parseInt(rating, 10)
+                    rating: parseInt(rating, 10),
+                    place_id: placeId
                 })
             });
             

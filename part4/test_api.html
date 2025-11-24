@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Test API Part 3</h1>
+    <button onclick="testLogin()">1. Test Login</button>
+    <button onclick="testPlaces()">2. Test Get Places</button>
+    <button onclick="testReviews()">3. Test Get Reviews</button>
+    <button onclick="testCreateReview()">4. Test Create Review</button>
+    <div id="result" style="margin-top: 20px; padding: 10px; background: #f0f0f0;"></div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000/api/v1';
+        let token = null;
+        
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email: 'admin@hbnb.io', password: 'admin1234'})
+                });
+                const data = await response.json();
+                token = data.access_token;
+                document.getElementById('result').innerHTML = `✓ Login OK<br>Token: ${token.substring(0, 50)}...`;
+            } catch (e) {
+                document.getElementById('result').innerHTML = `✗ Error: ${e.message}`;
+            }
+        }
+        
+        async function testPlaces() {
+            try {
+                const response = await fetch(`${API_URL}/places/`);
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `✓ Places: ${JSON.stringify(data, null, 2)}`;
+            } catch (e) {
+                document.getElementById('result').innerHTML = `✗ Error: ${e.message}`;
+            }
+        }
+        
+        async function testReviews() {
+            try {
+                const response = await fetch(`${API_URL}/reviews/places/1/reviews`);
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `✓ Reviews: ${JSON.stringify(data, null, 2)}`;
+            } catch (e) {
+                document.getElementById('result').innerHTML = `✗ Error: ${e.message}`;
+            }
+        }
+        
+        async function testCreateReview() {
+            if (!token) {
+                document.getElementById('result').innerHTML = '✗ Please login first';
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/reviews/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({text: 'Test review from browser', rating: 4, place_id: '1'})
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `Response: ${JSON.stringify(data, null, 2)}`;
+            } catch (e) {
+                document.getElementById('result').innerHTML = `✗ Error: ${e.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

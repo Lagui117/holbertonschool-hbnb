@@ -306,7 +306,7 @@ class HBnBFacade:
         place = self.get_place(place_id)
         if not place:
             raise ValueError("Place not found")
-        return [r for r in self.review_repo.get_all() if r.place.id == place_id]
+        return [r for r in self.review_repo.get_all() if r.place.id == int(place_id)]
 
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
