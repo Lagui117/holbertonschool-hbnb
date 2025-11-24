@@ -374,6 +374,12 @@ select {
     color: var(--text-primary);
 }
 
+input.error,
+textarea.error {
+    border-color: var(--error);
+    background-color: var(--error-light);
+}
+
 .form-control:focus,
 input:focus,
 textarea:focus,
@@ -381,6 +387,7 @@ select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px var(--primary-light);
+    transform: translateY(-1px);
 }
 
 textarea {
@@ -469,6 +476,17 @@ select {
     border-top: 1px solid var(--border-light);
     font-size: var(--fs-sm);
     color: var(--text-secondary);
+}
+
+.place-card .view-details {
+    color: var(--primary-color);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    transition: all var(--transition-base);
+}
+
+.place-card:hover .view-details {
+    transform: translateX(4px);
 }
 
 .review-card {
@@ -584,6 +602,11 @@ select {
 .filter-group select {
     min-width: 200px;
     background-color: var(--background);
+    font-weight: var(--fw-medium);
+}
+
+.filter-group select:hover {
+    border-color: rgba(255, 255, 255, 0.8);
 }
 
 .places-section {
@@ -963,6 +986,19 @@ button:disabled .button-loader {
     opacity: 1;
 }
 
+/* Button Ghost Style */
+.btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background-color: var(--background-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
 .login-required-message {
     text-align: center;
     padding: var(--space-8);
@@ -1105,6 +1141,17 @@ button:disabled .button-loader {
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
     }
 }
 

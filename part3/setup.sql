@@ -5,9 +5,7 @@
 -- et insère les données initiales (admin et amenities)
 -- This script creates all necessary tables for the HBnB application
 -- and inserts initial data (admin and amenities)
--- ================================================================================
-
--- Suppression des tables existantes (si elles existent) pour un déploiement propre
+-- ===========================================================================- Suppression des tables existantes (si elles existent) pour un déploiement propre
 -- Drop existing tables (if they exist) for clean deployment
 DROP TABLE IF EXISTS place_amenity_association;
 DROP TABLE IF EXISTS reviews;
